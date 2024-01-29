@@ -31,8 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
@@ -62,6 +60,11 @@ TEMPLATES = [
         },
     },
 ]
+
+# By default, Django stores cache keys in our database
+# To meet the project requirements, and ensure *only* our hand-crafted tables are present,
+# have it use an in-memory cache to store sessions instead.
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 WSGI_APPLICATION = 'clubhub.wsgi.application'
 
