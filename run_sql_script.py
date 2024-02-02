@@ -24,4 +24,8 @@ def run_sql_script(path):
 if __name__ == "__main__":
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'clubhub.settings')
     django.setup()
-    run_sql_script(sys.argv[1])
+    try:
+        run_sql_script(sys.argv[1])
+    except IndexError:
+        print("\033[91m \n Error: Make sure you pass in the DDL file! (e.g. python run_sql_script.py ddl/create_tables.sql)")
+
