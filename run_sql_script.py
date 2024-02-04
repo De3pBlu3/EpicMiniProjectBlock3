@@ -1,5 +1,7 @@
 import django
-from django.db import connection, OperationalError
+from django.db import connection, OperationalError, ProgrammingError
+
+import sqlparse
 
 import os
 import sys
@@ -7,17 +9,12 @@ import sys
 def run_sql_script(path):
     with open(path) as f:
         raw_contents = f.read()
-        
-    sql_commands = raw_contents.replace("\n", "").split(";")
 
     with connection.cursor() as cursor:
-        for command in sql_commands:
-            if command.strip() == "":
-                continue
-            
+        for command in sqlparse.split(raw_contents):
             try:
                 cursor.execute(command)
-            except OperationalError as e:
+            except (OperationalError, ProgrammingError) as e:
                 print (f'Error running command: "{command}": {e}')
                 break
             
