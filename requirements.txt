@@ -1,3 +1,4 @@
 Django==5.0.1
 django-stubs-ext>=4.2.7
 django-stubs>=4.2.7
+passlib
