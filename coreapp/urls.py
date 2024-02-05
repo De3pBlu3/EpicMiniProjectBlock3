@@ -4,7 +4,7 @@ from .views import home, auth
 
 urlpatterns = [
     path('', home.index),
-
     path('login', auth.login),
-    path('loginattempt', auth.loginattempt)
+    path('loginattempt', auth.loginattempt),
+    path('signupattempt', auth.signupattempt)
 ]
