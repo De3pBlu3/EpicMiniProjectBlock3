@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+{% for event in events %}
+    {{ event }}
+{% endfor %}
+
+{% for membership in memberships %}
+    {{ membership }}
+{% endfor %}
+
+{% endblock content%}

@@ -128,6 +128,28 @@ INSERT INTO users(username, type, password_hash, address, registered) VALUES
 
 
 INSERT INTO clubs(description, validity, coordinator) VALUES 
-    ('Club A', true, 1),
-    ('Club B', true, 1),
-    ('Club C', true, 1);
+    ('Club A', true, 1),    -- club ID 1
+    ('Club B', true, 1),    -- club ID 2
+    ('Club C', true, 1);    -- club ID 3
+
+INSERT INTO memberships(user_id, club_id, approved) VALUES
+    (2, 1, TRUE),           -- membership ID 1
+    (2, 3, FALSE),          -- membership ID 2
+    (3, 2, TRUE);           -- membership ID 3  
+
+INSERT INTO venues(club_id, venue) VALUES
+    (1, 'The A Arena'),         -- venue ID 1
+    (2, 'B Badminton Hall'),    -- venue ID 2
+    (3, 'The C Concert Space'); -- venue ID 3
+
+INSERT INTO events(club_id, event_start, event_end, venue_id) VALUES
+    (1, unixepoch("2024-03-01 00:00:00"), unixepoch("2024-03-01 23:59:59"), 1),    -- event ID 1
+    (2, unixepoch("2024-04-01 00:00:00"), unixepoch("2024-04-01 23:59:59"), 2),    -- event ID 2
+    (1, unixepoch("2024-05-01 00:00:00"), unixepoch("2024-05-01 23:59:59"), 1),    -- event ID 2
+    (2, unixepoch("2024-06-01 00:00:00"), unixepoch("2024-06-01 23:59:59"), 2);    -- event ID 2
+
+INSERT INTO event_applications(event_id, user_id, approved) VALUES
+    (1, 1, TRUE),
+    (1, 2, TRUE),
+    (1, 3, FALSE),
+    (2, 2, TRUE);

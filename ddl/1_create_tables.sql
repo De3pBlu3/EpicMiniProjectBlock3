@@ -41,8 +41,8 @@ CREATE TABLE clubs (
 CREATE TABLE events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     club_id INTEGER,
-    event_start DATETIME,
-    event_end DATETIME,
+    event_start INTEGER,
+    event_end INTEGER,
     venue_id INTEGER,
     
     created INTEGER,
