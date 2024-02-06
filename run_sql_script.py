@@ -1,5 +1,5 @@
 import django
-from django.db import connection, OperationalError, ProgrammingError
+from django.db import connection, DatabaseError
 
 import sqlparse
 
@@ -15,7 +15,7 @@ def run_sql_script(path):
         for command in sqlparse.split(raw_contents):
             try:
                 cursor.execute(command)
-            except (OperationalError, ProgrammingError) as e:
+            except DatabaseError as e:
                 print (f'Error running command: "{command}": {e}')
                 sys.exit(1)
 
