@@ -1,8 +1,8 @@
 INSERT INTO users(username, type, password_hash, address, registered) VALUES
     ('admin','2','$2b$12$Sry4C/f2kvMtTmGsnU.9FednX200gSPyuw4LQkzwOha7HY5CL4X.q','Admin town Adminland','true'),
-    ('rdumphries1','0','$2b$12$XOqp1Vr64Ke5NDxA4vKyIu8UQKA4E6yhqXrvf7eMtEZp3kFux0TYa','8489 Basil Way','true'),
-    ('pkegley2','0','$2b$12$IhkYtamYcvFjAt3P4iEbe.SQ9KSbp2rs2CAQu3chftFOA0Guxbgde','22 Derry Road','true'),
-    ('jswinbourne3','0','$2b$12$SFcMmqwWcKNF921ldLlyBOCOd57EnygCSQ8pyTg/VWOZGS2X4T0s2','003 Oak Drive','true'),
+    ('rdumphries1','1','$2b$12$XOqp1Vr64Ke5NDxA4vKyIu8UQKA4E6yhqXrvf7eMtEZp3kFux0TYa','8489 Basil Way','true'),
+    ('pkegley2','1','$2b$12$IhkYtamYcvFjAt3P4iEbe.SQ9KSbp2rs2CAQu3chftFOA0Guxbgde','22 Derry Road','true'),
+    ('jswinbourne3','1','$2b$12$SFcMmqwWcKNF921ldLlyBOCOd57EnygCSQ8pyTg/VWOZGS2X4T0s2','003 Oak Drive','true'),
     ('kstrettell4','0','$2b$12$QziNVw8GvsWogItICkFozuB0DyVetOf7hwO9B5w76RD6QJWNYKBQC','76862 Gale Park','true'),
     ('ltuerena5','0','$2b$12$aVytLGQ9pemBPiTHZ/ZzI.00.kdG5pM53ISY3zmeswQ5Qyk11Z.wu','7120 Colorado Road','true'),
     ('pbloschke6','0','$2b$12$diHPEqOX959fnYJKeIOKeekc7sTqjiDptMVW3HnqziJvUGiVbUCWy','87638 Armistice Drive','true'),
@@ -128,9 +128,9 @@ INSERT INTO users(username, type, password_hash, address, registered) VALUES
 
 
 INSERT INTO clubs(description, validity, coordinator) VALUES 
-    ('Club A', true, 1),    -- club ID 1
-    ('Club B', true, 1),    -- club ID 2
-    ('Club C', true, 1);    -- club ID 3
+    ('Club A', true, 2),    -- club ID 1
+    ('Club B', true, 3),    -- club ID 2
+    ('Club C', true, 4);    -- club ID 3
 
 INSERT INTO memberships(user_id, club_id, approved) VALUES
     (2, 1, TRUE),           -- membership ID 1
@@ -143,10 +143,10 @@ INSERT INTO venues(club_id, venue) VALUES
     (3, 'The C Concert Space'); -- venue ID 3
 
 INSERT INTO events(club_id, event_start, event_end, venue_id) VALUES
-    (1, unixepoch("2024-03-01 00:00:00"), unixepoch("2024-03-01 23:59:59"), 1),    -- event ID 1
-    (2, unixepoch("2024-04-01 00:00:00"), unixepoch("2024-04-01 23:59:59"), 2),    -- event ID 2
-    (1, unixepoch("2024-05-01 00:00:00"), unixepoch("2024-05-01 23:59:59"), 1),    -- event ID 2
-    (2, unixepoch("2024-06-01 00:00:00"), unixepoch("2024-06-01 23:59:59"), 2);    -- event ID 2
+    (1, datetime("2024-03-01 00:00:00"), datetime("2024-03-01 23:59:59"), 1),    -- event ID 1
+    (2, datetime("2024-04-01 00:00:00"), datetime("2024-04-01 23:59:59"), 2),    -- event ID 2
+    (1, datetime("2024-05-01 00:00:00"), datetime("2024-05-01 23:59:59"), 1),    -- event ID 3
+    (2, datetime("2024-06-01 00:00:00"), datetime("2024-06-01 23:59:59"), 2);    -- event ID 4
 
 INSERT INTO event_applications(event_id, user_id, approved) VALUES
     (1, 1, TRUE),

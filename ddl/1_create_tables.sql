@@ -6,12 +6,8 @@ CREATE TABLE users (
     address TEXT,
     registered BOOL,
     
-    -- SQLite doesn't have a DATETIME type.
-    -- To get around this: all the fields storing datetimes
-    -- are represented with an INTEGER storing a unix timestamp
-    -- (number of seconds since 01/01/1970)
-    created INTEGER,
-    updated INTEGER
+    created DATETIME,
+    updated DATETIME
 );
 
 CREATE TABLE memberships (
@@ -20,8 +16,8 @@ CREATE TABLE memberships (
     club_id INTEGER,
     approved BOOL,
     
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
     
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -32,8 +28,8 @@ CREATE TABLE clubs (
     validity BOOL,
     coordinator INTEGER,
     
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
     
     FOREIGN KEY (coordinator) REFERENCES users(id)
 );
@@ -41,12 +37,12 @@ CREATE TABLE clubs (
 CREATE TABLE events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     club_id INTEGER,
-    event_start INTEGER,
-    event_end INTEGER,
+    event_start DATETIME,
+    event_end DATETIME,
     venue_id INTEGER,
     
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
     
     FOREIGN KEY (club_id) REFERENCES clubs (id),
     FOREIGN KEY (venue_id) REFERENCES venues (id)
@@ -57,8 +53,8 @@ CREATE TABLE venues (
     club_id INTEGER,
     venue TEXT,
     
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
     
     FOREIGN KEY (club_id) REFERENCES clubs (id)
 );
@@ -69,8 +65,8 @@ CREATE TABLE event_applications (
     user_id INTEGER,
     approved BOOL,
 
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
     
     FOREIGN KEY (event_id) REFERENCES events (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
@@ -81,8 +77,8 @@ CREATE TABLE user_email (
     user_id INTEGER,
     email TEXT,
 
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
 
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
@@ -92,8 +88,8 @@ CREATE TABLE user_phone (
     user_id INTEGER,
     phone TEXT,
 
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
 
     FOREIGN KEY (user_id) REFERENCES users (id)
 );

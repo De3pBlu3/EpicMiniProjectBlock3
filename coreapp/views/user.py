@@ -5,9 +5,6 @@ from django.shortcuts import redirect, render
 from coreapp.views.decorators import user_login_required
 from coreapp import utils
 
-def index(request):
-    return HttpResponse("Hi!")
-
 @user_login_required
 def home(request):
     user = request.session["user"]
@@ -17,24 +14,9 @@ def home(request):
         return redirect("/coordinator/home")
     elif user["type"] == 2:
         # ... or admin home, as appropriate
-        return request("/admin/home")
+        return redirect("/admin/home")
     
     with connection.cursor() as cursor:
-        # What clubs is this user currently involved in?
-        cursor.execute("""
-            SELECT 
-                memberships.id as membership_id,
-                memberships.approved,
-                clubs.id as club_id,
-                clubs.description as club_description
-            FROM memberships
-            JOIN clubs ON memberships.club_id = clubs.id
-            WHERE memberships.user_id=%s
-        """, [user["id"]])
-        
-        membership_data = utils.fetchall_dict(cursor)
-        print (membership_data)
-
         # What events are running, and is the user signed up for any of them?
         cursor.execute("""
             SELECT
@@ -52,9 +34,7 @@ def home(request):
         """, [user["id"]])
         
         event_data = utils.fetchall_dict(cursor)
-        print (event_data)
 
     return render(request, "pages/user/home.html", {
-        "memberships": membership_data,
         "events": event_data
     })

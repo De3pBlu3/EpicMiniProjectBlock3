@@ -16,11 +16,9 @@
                 <h6 class="card-subtitle text-body-secondary pb-1">{{ event.venue }}</h6>
                 <h6 class="card-subtitle text-body-secondary pt-1">{{ event.event_start }} - {{ event.event_end }}</h6>
 
-                {% if event.user_has_applied %}
-                  <i>{{ event.user_application_status|yesno:"You're going!,Application pending" }}</i>
-                {% endif %}
+                <i>{{ event.num_requested_attendees }} {{ event.num_requested_attendees|pluralize:"person is,people are" }} interested</i>
 
-                <a href="/event/{{event.id}}" class="stretched-link float-end">see more →</a>
+                <a href="/event/{{event.id}}" class="stretched-link float-end">manage →</a>
               </div>
             </div>
           </div>
