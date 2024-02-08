@@ -1,10 +1,12 @@
 from django.urls import path
 
-from .views import home, auth
+from .views import home, auth, adminpanel
 
 urlpatterns = [
     path('', home.index),
     path('login', auth.login),
     path('loginattempt', auth.loginattempt),
-    path('signupattempt', auth.signupattempt)
+    path('signupattempt', auth.signupattempt),
+    
+    path('admin', adminpanel.all_user_admin),
 ]
