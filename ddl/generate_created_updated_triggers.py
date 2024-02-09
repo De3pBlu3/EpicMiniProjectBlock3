@@ -32,11 +32,14 @@ def main(table_names):
 if __name__ == "__main__":
     main([
         "users",
+        "user_applications",
+        "user_username",
+        "user_email",
+        "user_phone",
         "memberships",
         "clubs",
+        "club_applications",
         "events",
-        "venues",
         "event_applications",
-        "user_email",
-        "user_phone"
+        "venues"
     ])
