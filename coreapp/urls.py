@@ -8,6 +8,8 @@ urlpatterns = [
     path('dummy_login', auth.dummy_login),
     path('login', auth.login),
     path('loginattempt', auth.loginattempt),
+    path('signupattempt', auth.signupattempt),
+    
     path('admin', adminpanel.all_user_admin),
     
     
