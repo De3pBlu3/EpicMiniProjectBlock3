@@ -4,7 +4,7 @@ CREATE TABLE users (
     password_hash TEXT,
     address TEXT,
 
-    approved BOOL DEFAULT NULL,
+    approved BOOL DEFAULT FALSE,
     pending BOOL DEFAULT TRUE,
     
     created INTEGER,
@@ -14,7 +14,7 @@ CREATE TABLE users (
 CREATE TABLE user_applications (
     user_id INTEGER PRIMARY KEY,
     
-    approved BOOL DEFAULT NULL,
+    approved BOOL DEFAULT FALSE,
     pending BOOL DEFAULT TRUE,
 
     created INTEGER,
@@ -57,7 +57,7 @@ CREATE TABLE memberships (
     user_id INTEGER PRIMARY KEY,
     club_id INTEGER,
 
-    approved BOOL DEFAULT NULL,
+    approved BOOL DEFAULT FALSE,
     pending BOOL DEFAULT TRUE,
 
     created INTEGER,
@@ -71,7 +71,7 @@ CREATE TABLE clubs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     description TEXT,
 
-    approved BOOL DEFAULT NULL,
+    approved BOOL DEFAULT FALSE,
     pending BOOL DEFAULT TRUE,
 
     coordinator INTEGER,
@@ -85,7 +85,7 @@ CREATE TABLE clubs (
 CREATE TABLE club_applications (
     club_id INTEGER PRIMARY KEY,
     
-    approved BOOL DEFAULT NULL,
+    approved BOOL DEFAULT FALSE,
     pending BOOL DEFAULT TRUE,
 
     created INTEGER,
@@ -112,7 +112,7 @@ CREATE TABLE event_applications (
     event_id INTEGER PRIMARY KEY,
     user_id INTEGER,
 
-    approved BOOL DEFAULT NULL,
+    approved BOOL DEFAULT FALSE,
     pending BOOL DEFAULT TRUE,
 
     created INTEGER,

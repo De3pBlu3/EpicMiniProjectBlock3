@@ -1,5 +1,4 @@
 import re
-from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import redirect, render
 from django.db import connection
@@ -11,17 +10,18 @@ def login(request):
 
 @require_http_methods(["POST"])
 def loginattempt(request):
-    # TODO: Login auth
     username = request.POST.get("username")
     password = request.POST.get("password")
 
-    if check_credentials(username, password):
+    error, user = check_credentials(username, password)
+    
+    if error is None:
+        request.session["user"] = user
         return redirect("/home")
     else:
-        # TODO - error toast ("Login failed")
         return render(request, "login.html", {
             "toast": {
-                "text": "Login failed",
+                "text": error,
                 "type": "danger"
             }
         })
@@ -41,20 +41,35 @@ def signupattempt(request):
     
     return render(request, "login.html", {
         "toast": {
-            "text": "You have registered please log in!",
+            "text": "You have registered! Once the admin has approved you please log in.",
         }
     })
 
 def check_credentials(username, password):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT users.password_hash FROM users JOIN user_usernames WHERE user_usernames.username=%s", (username,))
+        cursor.execute("""
+            SELECT id, password_hash, approved, type
+            FROM users
+            JOIN user_usernames ON users.id=user_usernames.user_id
+            WHERE user_usernames.username=%s
+        """, (username,))
+        
         stored = cursor.fetchone()
 
         if stored:
-            print(stored)
-            if bcrypt.checkpw(password.encode('utf-8'), stored[0]):
-                return True
-    return False
+            print (stored)
+            id, hash, approved, type = stored
+            if bcrypt.checkpw(password.encode('utf-8'), hash.encode("utf-8")):
+                if approved:
+                    return None, {
+                        "type": type,
+                        "username": username,
+                        "user_id": id
+                    } 
+                else:
+                    return "Please wait for your account to be approved by the administrator before logging in", None
+            
+    return "Error logging in!", None
 
 def insert_user(info):
     with connection.cursor() as cursor:
@@ -90,7 +105,8 @@ def validate_details(dict):
     if not is_valid_password(password):
         return "Password is invalid", None
     
-    hashed_password = bcrypt.hashpw(dict.get("password").encode('utf-8'), bcrypt.gensalt(rounds=12))
+    hashed_password = bcrypt.hashpw(dict.get("password").encode('utf-8'), bcrypt.gensalt(rounds=12)).decode("utf-8")
+    
     if dict.get("user_type") == "user":
         type = 0
     elif dict.get("user_type") == "coordinator":

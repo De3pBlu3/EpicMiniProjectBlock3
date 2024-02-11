@@ -11,52 +11,52 @@ END;
 
 CREATE TRIGGER user_applications_created_timestamp AFTER INSERT ON user_applications
 BEGIN
-    UPDATE user_applications SET created = unixepoch('now') WHERE id = NEW.id;
+    UPDATE user_applications SET created = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
 CREATE TRIGGER user_applications_updated_timestamp AFTER UPDATE ON user_applications
 BEGIN
-    UPDATE user_applications SET updated = unixepoch('now') WHERE id = NEW.id;
+    UPDATE user_applications SET updated = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
 CREATE TRIGGER user_usernames_created_timestamp AFTER INSERT ON user_usernames
 BEGIN
-    UPDATE user_usernames SET created = unixepoch('now') WHERE id = NEW.id;
+    UPDATE user_usernames SET created = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
 CREATE TRIGGER user_usernames_updated_timestamp AFTER UPDATE ON user_usernames
 BEGIN
-    UPDATE user_usernames SET updated = unixepoch('now') WHERE id = NEW.id;
+    UPDATE user_usernames SET updated = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
 CREATE TRIGGER user_emails_created_timestamp AFTER INSERT ON user_emails
 BEGIN
-    UPDATE user_emails SET created = unixepoch('now') WHERE id = NEW.id;
+    UPDATE user_emails SET created = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
 CREATE TRIGGER user_emails_updated_timestamp AFTER UPDATE ON user_emails
 BEGIN
-    UPDATE user_emails SET updated = unixepoch('now') WHERE id = NEW.id;
+    UPDATE user_emails SET updated = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
 CREATE TRIGGER user_phones_created_timestamp AFTER INSERT ON user_phones
 BEGIN
-    UPDATE user_phones SET created = unixepoch('now') WHERE id = NEW.id;
+    UPDATE user_phones SET created = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
 CREATE TRIGGER user_phones_updated_timestamp AFTER UPDATE ON user_phones
 BEGIN
-    UPDATE user_phones SET updated = unixepoch('now') WHERE id = NEW.id;
+    UPDATE user_phones SET updated = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
 CREATE TRIGGER memberships_created_timestamp AFTER INSERT ON memberships
 BEGIN
-    UPDATE memberships SET created = unixepoch('now') WHERE id = NEW.id;
+    UPDATE memberships SET created = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
 CREATE TRIGGER memberships_updated_timestamp AFTER UPDATE ON memberships
 BEGIN
-    UPDATE memberships SET updated = unixepoch('now') WHERE id = NEW.id;
+    UPDATE memberships SET updated = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
 CREATE TRIGGER clubs_created_timestamp AFTER INSERT ON clubs
@@ -71,12 +71,12 @@ END;
 
 CREATE TRIGGER club_applications_created_timestamp AFTER INSERT ON club_applications
 BEGIN
-    UPDATE club_applications SET created = unixepoch('now') WHERE id = NEW.id;
+    UPDATE club_applications SET created = unixepoch('now') WHERE club_id = NEW.club_id;
 END;
 
 CREATE TRIGGER club_applications_updated_timestamp AFTER UPDATE ON club_applications
 BEGIN
-    UPDATE club_applications SET updated = unixepoch('now') WHERE id = NEW.id;
+    UPDATE club_applications SET updated = unixepoch('now') WHERE club_id = NEW.club_id;
 END;
 
 CREATE TRIGGER events_created_timestamp AFTER INSERT ON events
@@ -91,12 +91,12 @@ END;
 
 CREATE TRIGGER event_applications_created_timestamp AFTER INSERT ON event_applications
 BEGIN
-    UPDATE event_applications SET created = unixepoch('now') WHERE id = NEW.id;
+    UPDATE event_applications SET created = unixepoch('now') WHERE event_id = NEW.event_id;
 END;
 
 CREATE TRIGGER event_applications_updated_timestamp AFTER UPDATE ON event_applications
 BEGIN
-    UPDATE event_applications SET updated = unixepoch('now') WHERE id = NEW.id;
+    UPDATE event_applications SET updated = unixepoch('now') WHERE event_id = NEW.event_id;
 END;
 
 CREATE TRIGGER venues_created_timestamp AFTER INSERT ON venues
