@@ -23,7 +23,7 @@ CREATE TABLE user_applications (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE TABLE user_username (
+CREATE TABLE user_usernames (
     user_id INTEGER PRIMARY KEY,
     username TEXT UNIQUE,
 
@@ -33,7 +33,7 @@ CREATE TABLE user_username (
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-CREATE TABLE user_email (
+CREATE TABLE user_emails (
     user_id INTEGER PRIMARY KEY,
     email TEXT,
 
@@ -43,7 +43,7 @@ CREATE TABLE user_email (
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-CREATE TABLE user_phone (
+CREATE TABLE user_phones (
     user_id INTEGER PRIMARY KEY,
     phone TEXT,
 

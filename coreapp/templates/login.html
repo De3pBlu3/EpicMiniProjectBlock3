@@ -8,7 +8,6 @@
   </head>
   <body>
     <div class="container text-center">
-
         <div class="pt-5 row">
             <div class="col">
                 <h1 class="h2">Log in</h1>
@@ -51,6 +50,16 @@
             </form>
           </div>
         </div>
+
+        {% if toast %}
+        <div class="row justify-content-center">
+            <div class="col">
+                    <div class="alert alert-{{ toast.type|default:'primary' }} m-5">
+                        {{toast.text}}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
   </body>
 </html>

@@ -33,9 +33,9 @@ if __name__ == "__main__":
     main([
         "users",
         "user_applications",
-        "user_username",
-        "user_email",
-        "user_phone",
+        "user_usernames",
+        "user_emails",
+        "user_phones",
         "memberships",
         "clubs",
         "club_applications",
