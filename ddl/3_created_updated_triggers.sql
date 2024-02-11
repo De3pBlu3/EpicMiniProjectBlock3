@@ -19,34 +19,34 @@ BEGIN
     UPDATE user_applications SET updated = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
-CREATE TRIGGER user_username_created_timestamp AFTER INSERT ON user_username
+CREATE TRIGGER user_usernames_created_timestamp AFTER INSERT ON user_usernames
 BEGIN
-    UPDATE user_username SET created = unixepoch('now') WHERE user_id = NEW.user_id;
+    UPDATE user_usernames SET created = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
-CREATE TRIGGER user_username_updated_timestamp AFTER UPDATE ON user_username
+CREATE TRIGGER user_usernames_updated_timestamp AFTER UPDATE ON user_usernames
 BEGIN
-    UPDATE user_username SET updated = unixepoch('now') WHERE user_id = NEW.user_id;
+    UPDATE user_usernames SET updated = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
-CREATE TRIGGER user_email_created_timestamp AFTER INSERT ON user_email
+CREATE TRIGGER user_emails_created_timestamp AFTER INSERT ON user_emails
 BEGIN
-    UPDATE user_email SET created = unixepoch('now') WHERE user_id = NEW.user_id;
+    UPDATE user_emails SET created = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
-CREATE TRIGGER user_email_updated_timestamp AFTER UPDATE ON user_email
+CREATE TRIGGER user_emails_updated_timestamp AFTER UPDATE ON user_emails
 BEGIN
-    UPDATE user_email SET updated = unixepoch('now') WHERE user_id = NEW.user_id;
+    UPDATE user_emails SET updated = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
-CREATE TRIGGER user_phone_created_timestamp AFTER INSERT ON user_phone
+CREATE TRIGGER user_phones_created_timestamp AFTER INSERT ON user_phones
 BEGIN
-    UPDATE user_phone SET created = unixepoch('now') WHERE user_id = NEW.user_id;
+    UPDATE user_phones SET created = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
-CREATE TRIGGER user_phone_updated_timestamp AFTER UPDATE ON user_phone
+CREATE TRIGGER user_phones_updated_timestamp AFTER UPDATE ON user_phones
 BEGIN
-    UPDATE user_phone SET updated = unixepoch('now') WHERE user_id = NEW.user_id;
+    UPDATE user_phones SET updated = unixepoch('now') WHERE user_id = NEW.user_id;
 END;
 
 CREATE TRIGGER memberships_created_timestamp AFTER INSERT ON memberships
