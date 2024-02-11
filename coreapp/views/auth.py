@@ -5,18 +5,8 @@ from django.db import connection
 import bcrypt
 
 @require_http_methods(["GET"])
-def dummy_login(request):
-    request.session['user'] = {
-        "id": 2,
-        "username": "rdumphries1",
-        "type": 0,
-    }
-    
-    return redirect("/home")
-
-@require_http_methods(["GET"])
 def login(request):
-    return render(request, "pages/login.html")
+    return render(request, "login.html")
 
 @require_http_methods(["POST"])
 def loginattempt(request):
