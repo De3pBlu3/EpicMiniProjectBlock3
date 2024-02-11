@@ -11,6 +11,13 @@ BEGIN
     SELECT RAISE(ABORT, 'Admin user cannot be deleted');
 END;
 
+CREATE TRIGGER forbid_deprivilege_admin BEFORE UPDATE ON users
+FOR EACH ROW
+WHEN OLD.type = 2 AND (NEW.type != 2 OR NOT NEW.approved)
+BEGIN
+    SELECT RAISE(ABORT, 'Admin user cannot be deprivileged or deregistered');
+END;
+
 /*
     forbid_more_than_three_memberships
     "Users can request/join a maximum of three clubs"
