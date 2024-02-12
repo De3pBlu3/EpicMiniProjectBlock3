@@ -63,7 +63,7 @@ CREATE TABLE memberships (
     created INTEGER,
     updated INTEGER,
     
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (club_id) REFERENCES clubs(id)
 );
 
