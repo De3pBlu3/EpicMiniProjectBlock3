@@ -11,9 +11,14 @@
         <div class="col">
             <h1 class="h2">Create an event</h1>
             <form action="/venuecreationattempt" method="post">
-                <input type="datetime-local" name="date" class="form-control" placeholder="Date" required>
+                <label for="name">Name</label>
                 <input type="text" name="name" class="form-control" placeholder="Name" required>
+                <label for="venue">Venue</label>
                 <input type="text" name="venue" class="form-control" placeholder="Address" required>
+                <label for="start-date">Start Time</label>
+                <input type="datetime-local" name="start-date" class="form-control" placeholder="Start Time" required>
+                <label for="end-date">End Time</label>
+                <input type="datetime-local" name="end-date" class="form-control" placeholder="End Time" required>
                 <button type="submit" class="btn mt-2 btn-primary">Create</button>
             </form>
           </div>
