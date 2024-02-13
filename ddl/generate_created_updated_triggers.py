@@ -11,12 +11,12 @@ def generate_trigger_sql(table_name, primary_key):
     return f"""
 CREATE TRIGGER {table_name}_created_timestamp AFTER INSERT ON {table_name}
 BEGIN
-    UPDATE {table_name} SET created = unixepoch('now') WHERE {primary_key} = NEW.{primary_key};
+    UPDATE {table_name} SET created = datetime('now') WHERE {primary_key} = NEW.{primary_key};
 END;
 
 CREATE TRIGGER {table_name}_updated_timestamp AFTER UPDATE ON {table_name}
 BEGIN
-    UPDATE {table_name} SET updated = unixepoch('now') WHERE {primary_key} = NEW.{primary_key};
+    UPDATE {table_name} SET updated = datetime('now') WHERE {primary_key} = NEW.{primary_key};
 END;
 """
 

@@ -1,12 +1,18 @@
 from django.urls import path
 
-from .views import home, auth, adminpanel
+from .views import index, auth, adminpanel, user, coordinator
 
 urlpatterns = [
-    path('', home.index),
+    path('', index.index),
+
     path('login', auth.login),
     path('loginattempt', auth.loginattempt),
     path('signupattempt', auth.signupattempt),
     
     path('admin', adminpanel.all_user_admin),
+    
+    path('home', user.home),
+    
+    
+    path('coordinator/home', coordinator.home)
 ]
