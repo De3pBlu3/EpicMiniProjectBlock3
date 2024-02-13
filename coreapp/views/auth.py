@@ -6,7 +6,7 @@ import bcrypt
 
 @require_http_methods(["GET"])
 def login(request):
-    return render(request, "login.html")
+    return render(request, "pages/login.html")
 
 @require_http_methods(["POST"])
 def loginattempt(request):
@@ -19,7 +19,7 @@ def loginattempt(request):
         request.session["user"] = user
         return redirect("/home")
     else:
-        return render(request, "login.html", {
+        return render(request, "pages/login.html", {
             "toast": {
                 "text": error,
                 "type": "danger"
@@ -30,7 +30,7 @@ def loginattempt(request):
 def signupattempt(request):
     error, details = validate_details(request.POST)
     if error is not None:
-        return render(request, "login.html", {
+        return render(request, "pages/login.html", {
             "toast": {
                 "text": error,
                 "type": "danger"
@@ -39,7 +39,7 @@ def signupattempt(request):
     else:
         insert_user(details)
     
-    return render(request, "login.html", {
+    return render(request, "pages/login.html", {
         "toast": {
             "text": "You have registered! Once the admin has approved you please log in.",
         }
@@ -64,7 +64,7 @@ def check_credentials(username, password):
                     return None, {
                         "type": type,
                         "username": username,
-                        "user_id": id
+                        "id": id
                     } 
                 else:
                     return "Please wait for your account to be approved by the administrator before logging in", None

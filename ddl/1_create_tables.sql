@@ -7,8 +7,8 @@ CREATE TABLE users (
     approved BOOL DEFAULT FALSE,
     pending BOOL DEFAULT TRUE,
     
-    created INTEGER,
-    updated INTEGER
+    created DATETIME,
+    updated DATETIME
 );
 
 CREATE TABLE user_applications (
@@ -17,8 +17,8 @@ CREATE TABLE user_applications (
     approved BOOL DEFAULT FALSE,
     pending BOOL DEFAULT TRUE,
 
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
     
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -27,8 +27,8 @@ CREATE TABLE user_usernames (
     user_id INTEGER PRIMARY KEY,
     username TEXT UNIQUE,
 
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
 
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
@@ -37,8 +37,8 @@ CREATE TABLE user_emails (
     user_id INTEGER PRIMARY KEY,
     email TEXT,
 
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
 
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
@@ -47,8 +47,8 @@ CREATE TABLE user_phones (
     user_id INTEGER PRIMARY KEY,
     phone TEXT,
 
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
 
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
@@ -60,8 +60,8 @@ CREATE TABLE memberships (
     approved BOOL DEFAULT FALSE,
     pending BOOL DEFAULT TRUE,
 
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
     
     FOREIGN KEY (user_id) REFERENCES users(id)
     FOREIGN KEY (club_id) REFERENCES clubs(id)
@@ -76,8 +76,8 @@ CREATE TABLE clubs (
 
     coordinator INTEGER,
     
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
     
     FOREIGN KEY (coordinator) REFERENCES users(id)
 );
@@ -88,8 +88,8 @@ CREATE TABLE club_applications (
     approved BOOL DEFAULT FALSE,
     pending BOOL DEFAULT TRUE,
 
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
     
     FOREIGN KEY (club_id) REFERENCES clubs(id)
 );
@@ -101,8 +101,8 @@ CREATE TABLE events (
     event_end DATETIME,
     venue_id INTEGER,
     
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
     
     FOREIGN KEY (club_id) REFERENCES clubs (id),
     FOREIGN KEY (venue_id) REFERENCES venues (id)
@@ -115,8 +115,8 @@ CREATE TABLE event_applications (
     approved BOOL DEFAULT FALSE,
     pending BOOL DEFAULT TRUE,
 
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
     
     FOREIGN KEY (event_id) REFERENCES events (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
@@ -127,8 +127,8 @@ CREATE TABLE venues (
     club_id INTEGER,
     venue TEXT,
     
-    created INTEGER,
-    updated INTEGER,
+    created DATETIME,
+    updated DATETIME,
     
     FOREIGN KEY (club_id) REFERENCES clubs (id)
 );
