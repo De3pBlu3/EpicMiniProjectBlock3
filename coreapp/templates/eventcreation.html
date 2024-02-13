@@ -9,13 +9,12 @@
   <body>
     <div class="container text-center">
         <div class="col">
-            <h1 class="h2">Sign Up</h1>
-            <form action="/clubcreationattempt" method="post">
-                <div class="row">
-                <label for="club_description">Description: </label><textarea type="text" class="form-control" name="club-description" id="club-description">
-                </textarea>
-                    </div>
-                <button type="submit" class="btn mt-2 btn-primary">Sign Up</button>
+            <h1 class="h2">Create an event</h1>
+            <form action="/venuecreationattempt" method="post">
+                <input type="datetime-local" name="date" class="form-control" placeholder="Date" required>
+                <input type="text" name="name" class="form-control" placeholder="Name" required>
+                <input type="text" name="venue" class="form-control" placeholder="Address" required>
+                <button type="submit" class="btn mt-2 btn-primary">Create</button>
             </form>
           </div>
         </div>
