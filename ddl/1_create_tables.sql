@@ -79,7 +79,7 @@ CREATE TABLE clubs (
     created DATETIME,
     updated DATETIME,
     
-    FOREIGN KEY (club_id) REFERENCES clubs(id)
+    FOREIGN KEY (coordinator) REFERENCES users(id)
 );
 
 CREATE TABLE club_applications (
