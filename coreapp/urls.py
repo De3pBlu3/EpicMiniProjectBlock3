@@ -13,6 +13,8 @@ urlpatterns = [
     
     path('home', user.home),
     
-    
-    path('coordinator/home', coordinator.home)
+ 
+    path('coordinator/home', coordinator.home),
+    path('coordinator/clubcreation', coordinator.create_club),   
+    path('coordinator/clubcreationattempt', coordinator.club_creation_attempt)
 ]

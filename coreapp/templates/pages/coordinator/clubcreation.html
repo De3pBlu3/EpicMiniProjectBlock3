@@ -10,7 +10,8 @@
     <div class="container text-center">
         <div class="col">
             <h1 class="h2">Create a club</h1>
-            <form action="/clubcreationattempt" method="post">
+            <form action="/coordinator/clubcreationattempt" method="post">
+                {% csrf_token %}
                 <div class="row">
                 <label for="club_description">Description: </label><textarea type="text" class="form-control" name="club-description" id="club-description">
                 </textarea>
