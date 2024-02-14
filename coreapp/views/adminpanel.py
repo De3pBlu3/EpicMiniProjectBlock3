@@ -4,7 +4,6 @@ from coreapp.forms import userAlterForm
 from django.db import connection
 
 
-
 def all_user_admin(request):
     # If user.session_type != 0:
     #    return render(request, 'error.html', {'error': "You are not an admin!"})
@@ -24,18 +23,26 @@ def all_user_admin(request):
             # change registered status
             with connection.cursor() as cursor:
                 if registered_value:
-                    cursor.execute("UPDATE users SET registered = 1 WHERE username = %s", [username])
+                    cursor.execute("UPDATE users SET registered = 1 AND pending = 0 WHERE username = %s", [username])
                 else:
-                    cursor.execute("UPDATE users SET registered = 0 WHERE username = %s", [username])
-
+                    cursor.execute("UPDATE users SET registered = 0 AND pending = 0 WHERE username = %s", [username])
 
             return redirect('/admin')
+    form = userAlterForm() # else just unbound form
 
-    form = userAlterForm()
-    data = user_model.objects.raw("SELECT * FROM users")
-    data2 = user_model.objects.raw("SELECT * FROM users WHERE registered = 0")
-    # change username to be first 3 letters of username
-    for person in data:
-        person.password_hash = str(person.password_hash)[7:7+4] + "..."
+    # TODO there may be a way to use views for this, it seems silly to do two similar queries
+    data = user_model.objects.raw("""
+select users.id, username, type, email, address, phone, users.approved from users
+inner join user_emails on users.id = user_emails.user_id
+inner join user_phones on users.id = user_phones.user_id
+inner join user_usernames on users.id = user_usernames.user_id""")
+
+    data2 = user_model.objects.raw("""
+    select users.id, username, type, email, address, phone, users.approved from users
+inner join user_emails on users.id = user_emails.user_id
+inner join user_phones on users.id = user_phones.user_id
+inner join user_usernames on users.id = user_usernames.user_id
+WHERE users.approved = 0 AND users.pending = 1""")
+
+
     return render(request, 'admin.html', {'all_user_data': data, "pending_user_data": data2, "form": userAlterForm})
-
