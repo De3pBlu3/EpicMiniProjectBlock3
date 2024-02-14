@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="row">
+    <div class="col">
+      <h3>Upcoming events</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="row row-cols-1 g-4">
+        {% for event in events %}
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Event #{{ event.id }}</h5>
+                <h6 class="card-subtitle text-body-secondary pb-1">{{ event.venue }}</h6>
+                <h6 class="card-subtitle text-body-secondary pt-1">{{ event.event_start }} - {{ event.event_end }}</h6>
+
+                <i>{{ event.num_requested_attendees }} {{ event.num_requested_attendees|pluralize:"person is,people are" }} interested</i>
+
+                <a href="/event/{{event.id}}" class="stretched-link float-end">manage →</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock content %}
