@@ -24,11 +24,10 @@ def all_user_admin(request):
             # change registered status
             with connection.cursor() as cursor:
                 if registered_value:
-                    cursor.execute("UPDATE users SET registered = 1 WHERE username = %s", [username])
+                    cursor.execute("UPDATE users SET approved = 1, pending = 0 WHERE users.id = (select user_id from user_usernames where username = %s)", [username])
                 else:
-                    cursor.execute("UPDATE users SET registered = 0 WHERE username = %s", [username])
-
-
+                    cursor.execute("UPDATE users SET approved = 0, pending = 1 WHERE users.id = (select user_id from user_usernames where username = %s)", [username])
+                    #todo create an sql trigger to delete the user when invalid?
             return redirect('/admin')
 
     form = userAlterForm()
