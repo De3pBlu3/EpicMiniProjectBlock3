@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.2/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <title>User Data</title>
     <style>
         /* Additional styles for smaller tables */
@@ -14,130 +16,201 @@
             font-size: 0.9rem;
         }
     </style>
-</head>
 
-
-<body>
-    <div class="container-lg" style="max-width: none; padding-left: 35px; padding-right: 35px">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card lg-6">
-                    <div class="card-header">
-                        <h2>All users</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="overflow-auto" style="max-height: 400px;">
-                            <table class="table table-striped table-bordered table-hover table-hover-cursor table-sm">
-                                 <thead>
-                                        <tr>
-                                            <th>Username</th>
-                                            <th>Type</th>
-                                            <th>Email</th>
-                                            <th>Address</th>
-                                            <th>Phone</th>
-                                        </tr>
-                                  </thead>
-
-                                <tbody>
-                                    {% for user in all_user_data %}
-                                    <tr data-row-id="{{ user.username }}">
-                                        <td>{{ user.username }}</td>
-                                        <td>
-                                            {% if user.type == 0 %}
-                                                User
-                                            {% elif user.type == 1 %}
-                                                Coordinator
-                                            {% elif user.type == 2 %}
-                                                Admin
-                                            {% else %}
-                                                Unknown Type
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ user.email }}</td>
-                                        <td>{{ user.address }}</td>
-                                        <td>{{ user.phone }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-6">
-                <div class="card mt-5">
-                    <div class="card-header">
-                        <h2>Pending Approval</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="overflow-auto" style="max-height: 400px;">
-                            <table class="table table-striped table-bordered table-hover table-hover-cursor table-sm">
-                                  <thead>
-                                        <tr>
-                                            <th>Username</th>
-                                            <th>Type</th>
-                                            <th>Email</th>
-                                            <th>Address</th>
-                                            <th>Phone</th>
-                                        </tr>
-                                  </thead>
-
-                                <tbody>
-                                    {% for user in pending_user_data %}
-                                    <tr data-row-id="{{ user.username }}">
-                                        <td>{{ user.username }}</td>
-                                        <td>
-                                            {% if user.type == 0 %}
-                                                User
-                                            {% elif user.type == 1 %}
-                                                Coordinator
-                                            {% elif user.type == 2 %}
-                                                Admin
-                                            {% else %}
-                                                Unknown Type
-                                            {% endif %}
-                                        </td>
-                                        <td>{{ user.email }}</td>
-                                        <td>{{ user.address }}</td>
-                                        <td>{{ user.phone }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-{#    <form action="{% url 'update_value' user.username %}" method="post">#}
-{#        {% csrf_token %}#}
-{#        <input type="button" name="new_value" placeholder="Enter new value">#}
-{#        <button type="submit">Update Value</button>#}
-{#    </form>#}
-
-    <form action="/admin" method="post">
-        {% csrf_token %}
-        {{ form }}
-
-        <input type="submit" value="Submit">
-    </form>
-
-    <script>
-          document.querySelectorAll('tr').forEach(user => {
-            user.addEventListener('click', () => {
-              document.querySelectorAll('tr').forEach(user => {
-                user.classList.remove('selected');
-              });
-              user.classList.add('selected');
-            });
-          });
-    </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.22.2/dist/bootstrap-table.min.js"></script>
+</head>
+
+
+<body>
+<div class=all_users">
+    <div class="col-lg-10" >
+        <div class="card lg-5">
+            <div class="card-header">
+                <h2>All users</h2>
+            </div>
+            <div class="card-body">
+                <div class="overflow-auto" style="max-height: 400px;">
+                    <table id="all_users_table" data-toggle="table" data-multiple-select-row="true"
+                           data-click-to-select="true" data-pagination="true" data-search="true" data-buttons="all_users_buttons">
+                        <thead>
+                        <tr>
+                            <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
+                            <th>Username</th>
+                            <th>Type</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in all_user_data %}
+                            <tr data-row-id="{{ user.username }}">
+                                <td></td> <!-- Add this line -->
+                                <td>{{ user.username }}</td>
+                                <td>
+                                    {% if user.type == 0 %}
+                                        User
+                                    {% elif user.type == 1 %}
+                                        Coordinator
+                                    {% elif user.type == 2 %}
+                                        Admin
+                                    {% else %}
+                                        Unknown Type
+                                    {% endif %}
+                                </td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.address }}</td>
+                                <td>{{ user.phone }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pending_users">
+    <div class="col-lg-10">
+        <div class="card mt-5">
+            <div class="card-header">
+                <h2>Pending Approval</h2>
+            </div>
+            <div class="card-body">
+                <div class="overflow-auto" style="max-height: 400px;">
+                    <table id="pending_users_table" data-toggle="table" data-multiple-select-row="true"
+                           data-click-to-select="true" data-pagination="true" data-search="true" data-buttons="pending_users_buttons">
+                        <thead>
+                        <tr>
+                            <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
+                            <th>Username</th>
+                            <th>Type</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in pending_user_data %}
+                            <tr data-row-id="{{ user.username }}">
+                                <td></td> <!-- Add this line -->
+                                <td>{{ user.username }}</td>
+                                <td>
+                                    {% if user.type == 0 %}
+                                        User
+                                    {% elif user.type == 1 %}
+                                        Coordinator
+                                    {% elif user.type == 2 %}
+                                        Admin
+                                    {% else %}
+                                        Unknown Type
+                                    {% endif %}
+                                </td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.address }}</td>
+                                <td>{{ user.phone }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form id="registerForm" action="/admin" method="post">
+    {% csrf_token %}
+    {{ form }}
+
+    <input type="submit" value="Submit" >
+</form>
+
+<script>
+    function deregisterUser() {
+        let table = $('#all_users_table');
+        // getSelectedRow
+        let x = table.bootstrapTable('getSelections');
+        let username = x[0]['1'];
+        let registered = 0;
+
+        document.getElementById('id_username').value = username;
+        document.getElementById('id_registered').value = registered;
+        document.getElementById('registerForm').submit();
+    }
+
+    function approveUser() {
+        let table = $('#pending_users_table');
+        // getSelectedRow
+        let x = table.bootstrapTable('getSelections');
+        let username = x[0]['1'];
+        let registered = 1;
+
+        document.getElementById('id_username').value = username;
+        document.getElementById('id_registered').value = registered;
+        document.getElementById('registerForm').submit();
+    }
+
+    function rejectUser() {
+        let table = $('#pending_users_table');
+        // getSelectedRow
+        let x = table.bootstrapTable('getSelections');
+        let username = x[0]['1'];
+        let registered = 0;
+
+        document.getElementById('id_username').value = username;
+        document.getElementById('id_registered').value = registered;
+        document.getElementById('registerForm').submit();
+    }
+
+
+    function all_users_buttons() {
+        return {
+            btnUsersAdd: {
+                text: 'Deregister User',
+                icon: 'glyphicon glyphicon-remove-sign',
+                event: function () {
+                    deregisterUser()
+                },
+                attributes: {
+                    title: 'Deregister a user from the system'
+                }
+            }
+        }
+    }
+    function pending_users_buttons() {
+        return {
+            btnUsersApprove: {
+                text: 'Approve User',
+                icon: 'glyphicon glyphicon-ok-sign',
+                event: function () {
+                    approveUser()
+                },
+                attributes: {
+                    title: 'Approve a user to the system'
+                }
+            },
+            btnUsersReject: {
+                text: 'Reject User',
+                icon: 'glyphicon glyphicon-remove-sign',
+                event: function () {
+                    rejectUser()
+                },
+                attributes: {
+                    title: 'Reject a user from the system'
+                }
+            }
+        }
+    }
+
+
+</script>
+
 </body>
 </html>
