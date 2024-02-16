@@ -125,11 +125,14 @@
 </div>
 
 
-<form id="registerForm" action="/admin" method="post">
+<form id="approvalForm" action="/admin/changeapproval" method="post">
     {% csrf_token %}
-    {{ form }}
+    {{ change_approval_form }}
+</form>
 
-    <input type="submit" value="Submit" >
+<form id="deregisterForm" action="/admin/deregister" method="post">
+    {% csrf_token %}
+    {{ deregister_form }}
 </form>
 
 <script>
@@ -138,11 +141,10 @@
         // getSelectedRow
         let x = table.bootstrapTable('getSelections');
         let username = x[0]['1'];
-        let registered = 0;
+        console.log(username);
 
-        document.getElementById('id_username').value = username;
-        document.getElementById('id_registered').value = registered;
-        document.getElementById('registerForm').submit();
+        document.getElementById('register_username').value = username;
+        document.getElementById('deregisterForm').submit();
     }
 
     function approveUser() {
@@ -154,7 +156,7 @@
 
         document.getElementById('id_username').value = username;
         document.getElementById('id_registered').value = registered;
-        document.getElementById('registerForm').submit();
+        document.getElementById('approvalForm').submit();
     }
 
     function rejectUser() {
@@ -166,7 +168,7 @@
 
         document.getElementById('id_username').value = username;
         document.getElementById('id_registered').value = registered;
-        document.getElementById('registerForm').submit();
+        document.getElementById('approvalForm').submit();
     }
 
 
