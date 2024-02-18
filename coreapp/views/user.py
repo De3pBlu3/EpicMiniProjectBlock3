@@ -1,6 +1,7 @@
 from django.db import connection
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.views.decorators.http import require_http_methods
 
 from coreapp.views.decorators import user_login_required
 from coreapp import utils
@@ -38,3 +39,22 @@ def home(request):
     return render(request, "pages/user/home.html", {
         "events": event_data
     })
+
+@user_login_required
+def update_user(request):
+    user = request.session["user"]
+    if user is None:
+        return redirect('/login')
+
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT users.address, user_emails.email, user_usernames.username, user_phones.phone 
+            FROM users
+            JOIN user_phones ON users.id = user_phones.user_id
+            JOIN user_emails ON users.id = user_emails.user_id
+            JOIN user_usernames ON users.id = user_usernames.user_id
+            WHERE users.id = %s;
+        """, [user["id"]])
+        user_data = utils.fetchall_dict(cursor)[0]
+    print(user_data)
+    return render(request, 'pages/user/details.html', {'user_data': user_data})

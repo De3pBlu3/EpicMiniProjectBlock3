@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Details</title>
+</head>
+<body>
+    <h1>User Details</h1>
+    {% if user_data %}
+        
+        <p>Username: {{ user_data.username }}</p>
+        <p>Phone: {{ user_data.phone }}</p>
+        <p>Email: {{ user_data.email }}</p>
+        <p>Phone: {{ user_data.phone }}</p>
+
+    {% else %}
+        <p>No user data available.</p>
+    {% endif %}
+</body>
+</html>

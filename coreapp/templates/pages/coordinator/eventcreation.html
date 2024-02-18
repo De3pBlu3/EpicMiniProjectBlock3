@@ -10,9 +10,12 @@
     <div class="container text-center">
         <div class="col">
             <h1 class="h2">Create an event</h1>
-            <form action="/venuecreationattempt" method="post">
+            <form action="/coordinator/eventcreationattempt" method="post">
                 <label for="name">Name</label>
                 <input type="text" name="name" class="form-control" placeholder="Name" required>
+                <!-- added a club field
+                <label for="club">Club</label>
+                <input type="text" name="club" class="form-control" placeholder="Club" required> -->
                 <label for="venue">Venue</label>
                 <input type="text" name="venue" class="form-control" placeholder="Address" required>
                 <label for="start-date">Start Time</label>
