@@ -11,6 +11,13 @@
         <p>Phone: {{ user_data.phone }}</p>
         <p>Email: {{ user_data.email }}</p>
         <p>Phone: {{ user_data.phone }}</p>
+        <p>Password: {{ user_data.password_hash }}</p>
+
+        {% if type == 0 %} 
+            <p>Type: User</p>
+        {% else %}
+            <p>Type: Coordinator</p>
+        {% endif %}
 
     {% else %}
         <p>No user data available.</p>

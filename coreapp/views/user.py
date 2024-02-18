@@ -5,6 +5,7 @@ from django.views.decorators.http import require_http_methods
 
 from coreapp.views.decorators import user_login_required
 from coreapp import utils
+from .auth import validate_details
 
 @user_login_required
 def home(request):
@@ -48,7 +49,7 @@ def update_user(request):
 
     with connection.cursor() as cursor:
         cursor.execute("""
-            SELECT users.address, user_emails.email, user_usernames.username, user_phones.phone 
+            SELECT users.type, users.password_hash, users.address, user_emails.email, user_usernames.username, user_phones.phone 
             FROM users
             JOIN user_phones ON users.id = user_phones.user_id
             JOIN user_emails ON users.id = user_emails.user_id
@@ -58,3 +59,28 @@ def update_user(request):
         user_data = utils.fetchall_dict(cursor)[0]
     print(user_data)
     return render(request, 'pages/user/details.html', {'user_data': user_data})
+
+@user_login_required
+@require_http_methods(["POST"])
+def update_attempt(request):
+    error, details = validate_details(request.POST)
+    if error is not None:
+        return render(request, "pages/user/details.html", {
+            "toast": {
+                "text": error,
+                "type": "danger"
+            }
+        })
+    
+    else:
+        user_id = request.session["user"]["id"]
+        insert_updated_user(user_id, details)
+
+def insert_updated_user(user_id, info):
+    with connection.cursor() as cursor:
+        type, hashed_password, address, username, email, phonenumber = info
+
+        cursor.execute("UPDATE users SET type=%s, password_hash=%s, address=%s WHERE users.id=%s", [type, hashed_password, address, user_id])
+        cursor.execute("UPDATE user_phones SET phone=%s WHERE user_id=%s", [phonenumber, user_id])
+        cursor.execute("UPDATE user_emails SET email=%s WHERE user_id=%s", [email, user_id])
+        cursor.execute("UPDATE user_usernames SET username=%s WHERE user_id=%s", [username, user_id])
