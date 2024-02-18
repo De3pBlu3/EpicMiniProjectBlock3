@@ -11,6 +11,7 @@
         <div class="col">
             <h1 class="h2">Create an event</h1>
             <form action="/coordinator/eventcreationattempt" method="post">
+                {% csrf_token %}
                 <label for="name">Name</label>
                 <input type="text" name="name" class="form-control" placeholder="Name" required>
                 <!-- added a club field

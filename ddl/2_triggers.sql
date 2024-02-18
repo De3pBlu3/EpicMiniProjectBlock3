@@ -54,8 +54,10 @@ AFTER UPDATE OF approved, pending ON users
 FOR EACH ROW
 WHEN NEW.approved = 0 AND NEW.pending = 0 
 BEGIN
-    DELETE FROM users WHERE id = NEW.id;
     DELETE FROM user_phones WHERE user_id = NEW.id;
     DELETE FROM user_usernames WHERE user_id = NEW.id;
     DELETE FROM user_emails WHERE user_id = NEW.id;
+    DELETE FROM memberships WHERE user_id = NEW.id;
+    DELETE FROM event_applications WHERE user_id = NEW.id;
+    DELETE FROM users WHERE id = NEW.id;
 END;

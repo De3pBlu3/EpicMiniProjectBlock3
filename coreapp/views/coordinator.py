@@ -30,8 +30,7 @@ def home(request):
         # What events is this club running right now?
         cursor.execute("""
             SELECT
-                events.id, 
-                 ,
+                events.id,
                 event_end,
                 COUNT(ea.user_id) as num_requested_attendees
             FROM events
@@ -89,15 +88,15 @@ def event_creation_attempt(request):
     venue = request.POST["venue"]
 
     # check if venue exists
-    if venue_id := check_venue_exists(venue):
+    if not (venue_id := check_venue_exists(venue)):
         return HttpResponse("Venue doesn't exists")
     
     # inserting into database
     with connection.cursor() as cursor:
         cursor.execute("""
                 INSERT INTO events (club_id, event_start, event_end, venue_id) 
-                VALUES %s, %s, %s, %s""",
-                club["id"], request.POST["start-date"], request.POST["end-date"], venue_id)
+                VALUES (%s, %s, %s, %s)""",
+                [club["id"], request.POST["start-date"], request.POST["end-date"], venue_id])
     
     # redirecting into home page
     return redirect("/coordinator/home")
@@ -108,12 +107,10 @@ def check_venue_exists(venue):
             SELECT id
             FROM venues
             WHERE venue = %s
-        """, venue)
-    count = cursor.fetchone()[0]
-
-    if count == 0:
-        return False
-    return True
+        """, [venue])
+        result = cursor.fetchone()
+        print(result)
+        return result[0] if result else False
 
 
     
