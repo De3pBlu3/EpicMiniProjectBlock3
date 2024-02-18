@@ -69,16 +69,6 @@ BEGIN
     UPDATE clubs SET updated = datetime('now') WHERE id = NEW.id;
 END;
 
-CREATE TRIGGER club_applications_created_timestamp AFTER INSERT ON club_applications
-BEGIN
-    UPDATE club_applications SET created = datetime('now') WHERE club_id = NEW.club_id;
-END;
-
-CREATE TRIGGER club_applications_updated_timestamp AFTER UPDATE ON club_applications
-BEGIN
-    UPDATE club_applications SET updated = datetime('now') WHERE club_id = NEW.club_id;
-END;
-
 CREATE TRIGGER events_created_timestamp AFTER INSERT ON events
 BEGIN
     UPDATE events SET created = datetime('now') WHERE id = NEW.id;
@@ -87,16 +77,6 @@ END;
 CREATE TRIGGER events_updated_timestamp AFTER UPDATE ON events
 BEGIN
     UPDATE events SET updated = datetime('now') WHERE id = NEW.id;
-END;
-
-CREATE TRIGGER event_applications_created_timestamp AFTER INSERT ON event_applications
-BEGIN
-    UPDATE event_applications SET created = datetime('now') WHERE event_id = NEW.event_id;
-END;
-
-CREATE TRIGGER event_applications_updated_timestamp AFTER UPDATE ON event_applications
-BEGIN
-    UPDATE event_applications SET updated = datetime('now') WHERE event_id = NEW.event_id;
 END;
 
 CREATE TRIGGER venues_created_timestamp AFTER INSERT ON venues
