@@ -1,26 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>User Details</title>
-</head>
-<body>
+{% extends "layout.html" %}
+{% block content %}
     <h1>User Details</h1>
     {% if user_data %}
-        
-        <p>Username: {{ user_data.username }}</p>
-        <p>Phone: {{ user_data.phone }}</p>
-        <p>Email: {{ user_data.email }}</p>
-        <p>Phone: {{ user_data.phone }}</p>
-        <p>Password: {{ user_data.password_hash }}</p>
+        <form action="/user/updatedetailsattempt" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <label for="update_username">Username: </label>
+                <input type="text" class="form-control" name="username" id="update_username" value="{{ user_data.username }}">
+            </div>
 
-        {% if type == 0 %} 
-            <p>Type: User</p>
-        {% else %}
-            <p>Type: Coordinator</p>
-        {% endif %}
-
+            <div class="row">
+                <label for="update_password">Password: </label>
+                <input class="form-control" type="password" name="password" id="update_password">
+            </div>
+            
+            <div class="row">
+                <label for="update_email">Email: </label>
+                <input type="email" class="form-control" name="email" id="update_email" value="{{ user_data.email }}">
+            </div>
+            
+            <div class="row">
+                <label for="update_phonenumber">Phone: </label>
+                <input type="tel" class="form-control" name="phonenumber" id="update_phonenumber" value="{{ user_data.phone }}">
+            </div>
+            
+            <div class="row">
+                <label for="update_address">Address: </label>
+                <input type="text" class="form-control" name="address" id="update_address" value="{{ user_data.address }}">
+            </div>
+            
+            <button type="submit" class="btn mt-2 btn-primary">Update Details</button>
+        </form>
     {% else %}
         <p>No user data available.</p>
     {% endif %}
-</body>
-</html>
+{% endblock content %}

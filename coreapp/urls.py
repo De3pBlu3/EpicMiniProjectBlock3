@@ -20,5 +20,6 @@ urlpatterns = [
     path('coordinator/eventcreation', coordinator.create_event),
     path('coordinator/eventcreationattempt', coordinator.event_creation_attempt),
 
-    path('user/updatedetails', user.update_user)
+    path('user/updatedetails', user.update_user),
+    path('user/updatedetailsattempt', user.update_attempt)
 ]
