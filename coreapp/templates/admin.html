@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.2/dist/bootstrap-table.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>User Data</title>
     <style>
         /* Additional styles for smaller tables */
@@ -15,6 +15,7 @@
             padding: 0.5rem;
             font-size: 0.9rem;
         }
+
     </style>
 
 
@@ -26,127 +27,262 @@
 
 
 <body>
-<div class=all_users">
-    <div class="col-lg-10" >
-        <div class="card lg-5">
-            <div class="card-header">
-                <h2>All users</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-auto bg-light sticky-top">
+            <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
+                <a href="/" class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip"
+                   data-bs-placement="right" data-bs-original-title="Icon-only">
+                    <i style="font-size: 1.5rem;" class="bi-house fs-1"></i>
+                </a>
+                <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center justify-content-between w-100 px-3 align-items-center">
+                    <li class="nav-item">
+                        <button class="btn py-3 px-2" data-section="user_modification" title="" data-bs-toggle="tooltip"
+                                data-bs-placement="right" data-bs-original-title="Home">
+                            <i style="font-size: 1.5rem;" class="bi-people fs-1"></i>
+                        </button>
+                    </li>
+
+                    <li>
+                        <button class="btn py-3 px-2" data-section="coordinator_modification" title=""
+                                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                            <i style="font-size: 1.5rem;" class="bi-speedometer2 fs-1"></i>
+                        </button>
+                    </li>
+
+                </ul>
             </div>
-            <div class="card-body">
-                <div class="overflow-auto" style="max-height: 400px;">
-                    <table id="all_users_table" data-toggle="table" data-multiple-select-row="true"
-                           data-click-to-select="true" data-pagination="true" data-search="true" data-buttons="all_users_buttons">
-                        <thead>
-                        <tr>
-                            <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
-                            <th>Username</th>
-                            <th>Type</th>
-                            <th>Email</th>
-                            <th>Address</th>
-                            <th>Phone</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for user in all_user_data %}
-                            <tr data-row-id="{{ user.username }}">
-                                <td></td> <!-- Add this line -->
-                                <td>{{ user.username }}</td>
-                                <td>
-                                    {% if user.type == 0 %}
-                                        User
-                                    {% elif user.type == 1 %}
-                                        Coordinator
-                                    {% elif user.type == 2 %}
-                                        Admin
-                                    {% else %}
-                                        Unknown Type
-                                    {% endif %}
-                                </td>
-                                <td>{{ user.email }}</td>
-                                <td>{{ user.address }}</td>
-                                <td>{{ user.phone }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+        </div>
+        <div class="col-xl p-3 min-vh-100">
+            <div id="user_modification" class="section">
+                <div class=all_users">
+                    <div class="col-lg-10">
+                        <div class="card lg-5">
+                            <div class="card-header">
+                                <h2>All users</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="overflow-auto" style="max-height: 400px;">
+                                    <table id="all_users_table" data-toggle="table" data-multiple-select-row="true"
+                                           data-click-to-select="true" data-pagination="true" data-search="true"
+                                           data-buttons="all_users_buttons">
+                                        <thead>
+                                        <tr>
+                                            <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
+                                            <th>Username</th>
+                                            <th>Type</th>
+                                            <th>Email</th>
+                                            <th>Address</th>
+                                            <th>Phone</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for user in all_user_data %}
+                                            <tr data-row-id="{{ user.username }}">
+                                                <td></td> <!-- Add this line -->
+                                                <td>{{ user.username }}</td>
+                                                <td>
+                                                    {% if user.type == 0 %}
+                                                        User
+                                                    {% elif user.type == 1 %}
+                                                        Coordinator
+                                                    {% elif user.type == 2 %}
+                                                        Admin
+                                                    {% else %}
+                                                        Unknown Type
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ user.email }}</td>
+                                                <td>{{ user.address }}</td>
+                                                <td>{{ user.phone }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pending_users">
+                    <div class="col-lg-10">
+                        <div class="card mt-5">
+                            <div class="card-header">
+                                <h2>Pending Approval</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="overflow-auto" style="max-height: 400px;">
+                                    <table id="pending_users_table" data-toggle="table" data-multiple-select-row="true"
+                                           data-click-to-select="true" data-pagination="true" data-search="true"
+                                           data-buttons="pending_users_buttons">
+                                        <thead>
+                                        <tr>
+                                            <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
+                                            <th>Username</th>
+                                            <th>Type</th>
+                                            <th>Email</th>
+                                            <th>Address</th>
+                                            <th>Phone</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for user in pending_user_data %}
+                                            <tr data-row-id="{{ user.username }}">
+                                                <td></td> <!-- Add this line -->
+                                                <td>{{ user.username }}</td>
+                                                <td>
+                                                    {% if user.type == 0 %}
+                                                        User
+                                                    {% elif user.type == 1 %}
+                                                        Coordinator
+                                                    {% elif user.type == 2 %}
+                                                        Admin
+                                                    {% else %}
+                                                        Unknown Type
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ user.email }}</td>
+                                                <td>{{ user.address }}</td>
+                                                <td>{{ user.phone }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="coordinator_modification" class="section">
+                <div class=all_coordinators">
+                    <div class="col-lg-10">
+                        <div class="card lg-5">
+                            <div class="card-header">
+                                <h2>All Coordinators</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="overflow-auto" style="max-height: 400px;">
+                                    <table id="all_coordinators_table" data-toggle="table" data-multiple-select-row="true"
+                                           data-click-to-select="true" data-pagination="true" data-search="true"
+                                           data-buttons="all_coordinators_buttons">
+                                        <thead>
+                                        <tr>
+                                            <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
+                                            <th>Username</th>
+                                            <th>Type</th>
+                                            <th>Email</th>
+                                            <th>Address</th>
+                                            <th>Phone</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for user in all_coordinators_data %}
+                                            <tr data-row-id="{{ user.username }}">
+                                                <td></td> <!-- Add this line -->
+                                                <td>{{ user.username }}</td>
+                                                <td>
+                                                    {% if user.type == 0 %}
+                                                        User
+                                                    {% elif user.type == 1 %}
+                                                        Coordinator
+                                                    {% elif user.type == 2 %}
+                                                        Admin
+                                                    {% else %}
+                                                        Unknown Type
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ user.email }}</td>
+                                                <td>{{ user.address }}</td>
+                                                <td>{{ user.phone }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pending_coordinators">
+                    <div class="col-lg-10">
+                        <div class="card mt-5">
+                            <div class="card-header">
+                                <h2>Pending coordinators</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="overflow-auto" style="max-height: 400px;">
+                                    <table id="pending_coordinators_table" data-toggle="table" data-multiple-select-row="true"
+                                           data-click-to-select="true" data-pagination="true" data-search="true"
+                                           data-buttons="pending_coordinators_buttons">
+                                        <thead>
+                                        <tr>
+                                            <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
+                                            <th>Username</th>
+                                            <th>Type</th>
+                                            <th>Email</th>
+                                            <th>Address</th>
+                                            <th>Phone</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for user in pending_coordinator_data %}
+                                            <tr data-row-id="{{ user.username }}">
+                                                <td></td> <!-- Add this line -->
+                                                <td>{{ user.username }}</td>
+                                                <td>
+                                                    {% if user.type == 0 %}
+                                                        User
+                                                    {% elif user.type == 1 %}
+                                                        Coordinator
+                                                    {% elif user.type == 2 %}
+                                                        Admin
+                                                    {% else %}
+                                                        Unknown Type
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ user.email }}</td>
+                                                <td>{{ user.address }}</td>
+                                                <td>{{ user.phone }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="pending_users">
-    <div class="col-lg-10">
-        <div class="card mt-5">
-            <div class="card-header">
-                <h2>Pending Approval</h2>
-            </div>
-            <div class="card-body">
-                <div class="overflow-auto" style="max-height: 400px;">
-                    <table id="pending_users_table" data-toggle="table" data-multiple-select-row="true"
-                           data-click-to-select="true" data-pagination="true" data-search="true" data-buttons="pending_users_buttons">
-                        <thead>
-                        <tr>
-                            <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
-                            <th>Username</th>
-                            <th>Type</th>
-                            <th>Email</th>
-                            <th>Address</th>
-                            <th>Phone</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for user in pending_user_data %}
-                            <tr data-row-id="{{ user.username }}">
-                                <td></td> <!-- Add this line -->
-                                <td>{{ user.username }}</td>
-                                <td>
-                                    {% if user.type == 0 %}
-                                        User
-                                    {% elif user.type == 1 %}
-                                        Coordinator
-                                    {% elif user.type == 2 %}
-                                        Admin
-                                    {% else %}
-                                        Unknown Type
-                                    {% endif %}
-                                </td>
-                                <td>{{ user.email }}</td>
-                                <td>{{ user.address }}</td>
-                                <td>{{ user.phone }}</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-
-<form id="registerForm" action="/admin" method="post">
+<form id="approvalForm" action="/admin/changeapproval" method="post">
     {% csrf_token %}
-    {{ form }}
+    {{ change_approval_form }}
+</form>
 
-    <input type="submit" value="Submit" >
+<form id="deregisterForm" action="/admin/deregister" method="post">
+    {% csrf_token %}
+    {{ deregister_form }}
 </form>
 
 <script>
-    function deregisterUser() {
-        let table = $('#all_users_table');
+    function deregisterUser(tableID) {
+        let table = $(tableID);
         // getSelectedRow
         let x = table.bootstrapTable('getSelections');
         let username = x[0]['1'];
-        let registered = 0;
+        console.log(username);
 
-        document.getElementById('id_username').value = username;
-        document.getElementById('id_registered').value = registered;
-        document.getElementById('registerForm').submit();
+        document.getElementById('register_username').value = username;
+        document.getElementById('deregisterForm').submit();
     }
 
-    function approveUser() {
-        let table = $('#pending_users_table');
+    function approveUser(tableID) {
+        let table = $(tableID);
         // getSelectedRow
         let x = table.bootstrapTable('getSelections');
         let username = x[0]['1'];
@@ -154,11 +290,11 @@
 
         document.getElementById('id_username').value = username;
         document.getElementById('id_registered').value = registered;
-        document.getElementById('registerForm').submit();
+        document.getElementById('approvalForm').submit();
     }
 
-    function rejectUser() {
-        let table = $('#pending_users_table');
+    function rejectUser(tableID) {
+        let table = $(tableID);
         // getSelectedRow
         let x = table.bootstrapTable('getSelections');
         let username = x[0]['1'];
@@ -166,7 +302,7 @@
 
         document.getElementById('id_username').value = username;
         document.getElementById('id_registered').value = registered;
-        document.getElementById('registerForm').submit();
+        document.getElementById('approvalForm').submit();
     }
 
 
@@ -174,9 +310,9 @@
         return {
             btnUsersAdd: {
                 text: 'Deregister User',
-                icon: 'glyphicon glyphicon-remove-sign',
+                icon: 'bi bi-dash-circle',
                 event: function () {
-                    deregisterUser()
+                    deregisterUser("#all_users_table")
                 },
                 attributes: {
                     title: 'Deregister a user from the system'
@@ -184,13 +320,14 @@
             }
         }
     }
+
     function pending_users_buttons() {
         return {
             btnUsersApprove: {
                 text: 'Approve User',
-                icon: 'glyphicon glyphicon-ok-sign',
+                icon: 'bi bi-plus-circle',
                 event: function () {
-                    approveUser()
+                    approveUser("#pending_users_table")
                 },
                 attributes: {
                     title: 'Approve a user to the system'
@@ -198,9 +335,9 @@
             },
             btnUsersReject: {
                 text: 'Reject User',
-                icon: 'glyphicon glyphicon-remove-sign',
+                icon: 'bi bi-dash-circle',
                 event: function () {
-                    rejectUser()
+                    rejectUser("#pending_users_table")
                 },
                 attributes: {
                     title: 'Reject a user from the system'
@@ -208,6 +345,48 @@
             }
         }
     }
+
+    function pending_coordinators_buttons() {
+        return {
+            btnCoordinatorsApprove: {
+                text: 'Approve Coordinator',
+                icon: 'bi bi-plus-circle',
+                event: function () {
+                    approveUser("#pending_coordinators_table")
+                },
+                attributes: {
+                    title: 'Approve a coordinator to the system'
+                }
+            },
+
+            btnCoordinatorsReject: {
+                text: 'Reject Coordinator',
+                icon: 'bi bi-dash-circle',
+                event: function () {
+                    rejectUser("#pending_coordinators_table")
+                },
+                attributes: {
+                    title: 'Reject a coordinator from the system'
+                }
+            }
+        }
+    }
+    $(document).ready(function () {
+        console.log('ready')
+        // Initially hide all sections
+        $('.section').hide();
+        // Show the first section
+        $('#user_modification').show();
+        // When a button is clicked
+        $('.btn').click(function () {
+            console.log('clicked')
+            // Hide all sections
+            $('.section').hide();
+            // Show the section associated with the button
+            var sectionToShow = $(this).data('section');
+            $('#' + sectionToShow).show();
+        });
+    });
 
 
 </script>
