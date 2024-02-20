@@ -80,7 +80,7 @@ def all_user_admin(request):
 select users.id, username, type, email, address, phone, users.approved from users
 inner join user_emails on users.id = user_emails.user_id
 inner join user_phones on users.id = user_phones.user_id
-inner join user_usernames on users.id = user_usernames.user_id where users.type = 0;""")
+inner join user_usernames on users.id = user_usernames.user_id where users.type = 0 ;""")
 
     pending_users = user_model.objects.raw("""
     select users.id, username, type, email, address, phone, users.approved from users
@@ -103,9 +103,29 @@ inner join user_phones on users.id = user_phones.user_id
 inner join user_usernames on users.id = user_usernames.user_id
 WHERE users.approved = 0 AND users.pending = 1 AND users.type = 1;""")
 
+    # TODO change this to take club.name and user.username when changes are implemented
+    all_clubs = user_model.objects.raw("""
+    SELECT clubs.id, clubs.description, memberships.user_id
+    FROM clubs
+    INNER JOIN memberships ON clubs.id = memberships.club_id
+    INNER JOIN users ON memberships.user_id = users.id
+    ORDER BY clubs.id""")
+
+    # split all_clubs into a dictionary of clubs as key and list of users in each club as value
+    club_dict = {}
+    for club in all_clubs:
+        if club.id not in club_dict:
+            club_dict[club.id] = []
+        club_dict[club.id].append(club.user_id)
+
+
+
+
     return render(request, 'admin.html', {'all_user_data': all_users,
                                           "pending_user_data": pending_users,
                                           "pending_coordinator_data": pending_coordinators,
                                           "all_coordinators_data": coordinators,
                                           "change_approval_form": change_approval_form,
-                                          "deregister_form": deregister_form})
+                                          "deregister_form": deregister_form,
+                                          "all_clubs": club_dict
+                                          })
