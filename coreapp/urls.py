@@ -10,6 +10,8 @@ urlpatterns = [
     path('signupattempt', auth.signupattempt),
     
     path('admin', adminpanel.all_user_admin),
+    path('admin/changeapproval', adminpanel.change_approval),
+    path('admin/deregister', adminpanel.deregister),
     
     path('home', user.home),
     
