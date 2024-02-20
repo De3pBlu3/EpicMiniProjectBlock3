@@ -749,6 +749,7 @@ INSERT INTO user_phones (user_id, phone) VALUES((SELECT last_insert_rowid()),'(6
 INSERT INTO user_usernames (user_id, username) VALUES((SELECT last_insert_rowid()),'anewbery3g');
 COMMIT;
 
+UPDATE users SET pending = 0 WHERE pending = 1; -- bodge job, assume all users have been approved
 
 --
 -- INSERT INTO clubs(description, approved, coordinator) VALUES
