@@ -13,9 +13,10 @@
             <form action="/coordinator/clubcreationattempt" method="post">
                 {% csrf_token %}
                 <div class="row">
-                <label for="club_description">Description: </label><textarea type="text" class="form-control" name="club-description" id="club-description">
+                <label for="club_description">Description: </label>
+                <textarea type="text" class="form-control" name="club-description" id="club-description">
                 </textarea>
-                    </div>
+                </div>
                 <button type="submit" class="btn mt-2 btn-primary">Create</button>
             </form>
           </div>
