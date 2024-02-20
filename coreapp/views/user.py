@@ -16,7 +16,7 @@ def home(request):
         return redirect("/coordinator/home")
     elif user["type"] == 2:
         # ... or admin home, as appropriate
-        return redirect("/admin/home")
+        return redirect("/admin")
     
     with connection.cursor() as cursor:
         # What events are running, and is the user signed up for any of them?
