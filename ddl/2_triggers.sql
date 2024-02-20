@@ -43,3 +43,21 @@ WHEN (
 BEGIN
     SELECT RAISE(ABORT, 'A user cannot have more than three memberships');
 END;
+
+/*
+    autodelete users when both pending and is approved is false 
+    Aka When the user is rejected
+*/
+
+CREATE TRIGGER delete_user_if_rejected
+AFTER UPDATE OF approved, pending ON user_applications
+FOR EACH ROW
+WHEN NEW.approved = 0 AND NEW.pending = 0
+BEGIN
+    DELETE FROM user_phones WHERE user_id = NEW.user_id;
+    DELETE FROM user_usernames WHERE user_id = NEW.user_id;
+    DELETE FROM user_emails WHERE user_id = NEW.user_id;
+    DELETE FROM memberships WHERE user_id = NEW.user_id;
+    DELETE FROM event_applications WHERE user_id = NEW.user_id;
+    DELETE FROM users WHERE id = NEW.user_id;
+END;
