@@ -51,7 +51,8 @@ CREATE TABLE user_phones (
 );
 
 CREATE TABLE memberships (
-    user_id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
     club_id INTEGER,
 
     approved BOOL DEFAULT FALSE,
