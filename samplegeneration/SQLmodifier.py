@@ -1,14 +1,16 @@
 import csv
 
 
-pathToSql = r"samplegeneration/original_insert_statements.sql"
+pathToSql = r"original_insert_statements.sql"
 
-pathToCSV = r"samplegeneration/MOCK_DATA.csv"
+pathToCSV = r"MOCK_DATA.csv"
 
 begin = "BEGIN;"
 commit = "COMMIT;"
 
 data = []
+
+
 
 # Open the file and read the contents
 with open(pathToSql, "r") as file:
@@ -43,9 +45,9 @@ with open(pathToCSV, "r") as file:
 
         # create the insert statements
         userInsert = data[index - 1]
-        emailInsert = f"INSERT INTO user_email (user_id, email) VALUES((SELECT LAST_INSERT_ID()),'{row[0]}');"
-        phoneInsert = f"INSERT INTO user_phone (user_id, phone) VALUES((SELECT LAST_INSERT_ID()),'{row[1]}');"
-        usernameInsert = f"INSERT INTO user_username (user_id, username) VALUES((SELECT LAST_INSERT_ID()),'{row[2]}');"
+        emailInsert = f"INSERT INTO user_emails (user_id, email) VALUES((SELECT last_insert_rowid()),'{row[0]}');"
+        phoneInsert = f"INSERT INTO user_phones (user_id, phone) VALUES((SELECT last_insert_rowid()),'{row[1]}');"
+        usernameInsert = f"INSERT INTO user_usernames (user_id, username) VALUES((SELECT last_insert_rowid()),'{row[2]}');"
 
         # sql command is the combination of the 4 insert statements + begin and commit
         sqlcommand = begin + "\n" + userInsert + emailInsert + "\n"  + phoneInsert  + "\n" + usernameInsert + "\n" + commit
