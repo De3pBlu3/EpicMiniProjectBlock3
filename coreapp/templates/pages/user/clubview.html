@@ -10,15 +10,12 @@
   <div class="row pt-5">
     <div class="row mx-3">
         <div class="row align-center" ><h2 class="align-center">Your Clubs</h2></div>
+        {% for club in clubs %}
+          {% if club.is_accepted %}
           <div class="col-md border rounded bg-light m-1 ">
-          <h4>Science club</h4>
-          </div>
-            <div class="col-md border rounded bg-light m-1">
-            <h4>Jousting club</h4>
-            </div>
-          <div class="col-md border rounded bg-light m-1">
-          <h4>Credit card fraud club</h4>
-          </div>
+          <h4>{{ club.name }}</h4>
+          {% endif %}
+        {% endfor %}
     <!--
         {% for club in clubs %}
           {% if club.is_accepted %}
