@@ -23,5 +23,8 @@ urlpatterns = [
     path('coordinator/eventcreationattempt', coordinator.event_creation_attempt),
 
     path('user/updatedetails', user.update_user),
-    path('user/updatedetailsattempt', user.update_attempt)
+    path('user/updatedetailsattempt', user.update_attempt),
+    path('home/clubview', user.display_clubs),
+    path('home/joinclub', user.add_membership),
+    path('coordinator/home', coordinator.home)
 ]

@@ -46,18 +46,22 @@
   </div>
 
   <div class="row">
-    <div class="col-12">
-      <h2>Other Clubs</h2>
+  <div class="col-12">
+    <h2>Other Clubs</h2>
 
-        {% for club in clubs %}
-          {% if not club.applied %}
-            <div class="col-md border rounded bg-light m-1 ">
-              <h4>{{ club.name }}</h4>
-              <form action="joinclub.html" method="get"><button value="{{ club.name }}" type="submit">Join</button></form>
-            </div>
-          {% endif %}
-        {% endfor %}
-    </div>
+      {% for club in clubs %}
+        {% if not club.applied %}
+          <div class="col-md border rounded bg-light m-1 ">
+            <h4>{{ club.name }}</h4>
+            <form action="/home/joinclub" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="club_id" value="{{ club.club_id }}">
+              <button type="submit">Join</button>
+            </form>
+          </div>
+        {% endif %}
+      {% endfor %}
   </div>
+</div>
   </body>
 </html>
