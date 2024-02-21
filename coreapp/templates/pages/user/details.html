@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>User Details</h1>
+    {% if user_data %}
+        <form action="/user/updatedetailsattempt" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <label for="update_username">Username: </label>
+                <input type="text" class="form-control" name="username" id="update_username" value="{{ user_data.username }}">
+            </div>
+
+            <div class="row">
+                <label for="update_password">Password: </label>
+                <input class="form-control" type="password" name="password" id="update_password">
+            </div>
+            
+            <div class="row">
+                <label for="update_email">Email: </label>
+                <input type="email" class="form-control" name="email" id="update_email" value="{{ user_data.email }}">
+            </div>
+            
+            <div class="row">
+                <label for="update_phonenumber">Phone: </label>
+                <input type="tel" class="form-control" name="phonenumber" id="update_phonenumber" value="{{ user_data.phone }}">
+            </div>
+            
+            <div class="row">
+                <label for="update_address">Address: </label>
+                <input type="text" class="form-control" name="address" id="update_address" value="{{ user_data.address }}">
+            </div>
+            
+            <button type="submit" class="btn mt-2 btn-primary">Update Details</button>
+        </form>
+    {% else %}
+        <p>No user data available.</p>
+    {% endif %}
+{% endblock content %}
