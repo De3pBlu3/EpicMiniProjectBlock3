@@ -12,8 +12,12 @@
             <h1 class="h2">Create an event</h1>
             <form action="/coordinator/eventcreationattempt" method="post">
                 {% csrf_token %}
-                <label for="name">Name</label>
-                <input type="text" name="name" class="form-control" placeholder="Name" required>
+                <label for="title">Title</label>
+                <input type="text" name="title" class="form-control" placeholder="Title" required>
+
+                <label for="description">Description:</label>
+                <textarea type="text" class="form-control" name="description" id="description"></textarea>
+
                 <!-- added a club field
                 <label for="club">Club</label>
                 <input type="text" name="club" class="form-control" placeholder="Club" required> -->

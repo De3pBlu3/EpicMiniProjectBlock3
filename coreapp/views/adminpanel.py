@@ -20,9 +20,6 @@ def deregister(request):
             # change registered status
             with connection.cursor() as cursor:
                 cursor.execute(
-                    """UPDATE users SET approved = 0, pending = 1 WHERE users.id = (select user_id from user_usernames where username = %s);""",
-                    [username])
-                cursor.execute(
                     """UPDATE user_applications SET approved = 0, pending = 1 WHERE user_applications.user_id = (select user_id from user_usernames where username = %s);""",
                     [username])
 
@@ -50,15 +47,9 @@ def change_approval(request):
             with connection.cursor() as cursor:
                 if registered_value:
                     cursor.execute(
-                        """UPDATE users SET approved = 1, pending = 0 WHERE users.id = (select user_id from user_usernames where username = %s);""",
-                        [username])
-                    cursor.execute(
                         """UPDATE user_applications SET approved = 1, pending = 0 WHERE user_applications.user_id = (select user_id from user_usernames where username = %s);""",
                         [username])
                 else:
-                    cursor.execute(
-                        """UPDATE users SET approved = 0, pending = 0 WHERE users.id = (select user_id from user_usernames where username = %s);""",
-                        [username])
                     cursor.execute(
                         """UPDATE user_applications SET approved = 0, pending = 0 WHERE user_applications.user_id = (select user_id from user_usernames where username = %s);""",
                         [username])
@@ -77,31 +68,35 @@ def all_user_admin(request):
 
     # TODO there may be a way to use views  for this, it seems silly to do two similar queries
     all_users = user_model.objects.raw("""
-select users.id, username, type, email, address, phone, users.approved from users
-inner join user_emails on users.id = user_emails.user_id
-inner join user_phones on users.id = user_phones.user_id
-inner join user_usernames on users.id = user_usernames.user_id where users.type = 0;""")
-
-    pending_users = user_model.objects.raw("""
-    select users.id, username, type, email, address, phone, users.approved from users
+select users.id, username, type, email, address, phone, user_applications.approved from users
 inner join user_emails on users.id = user_emails.user_id
 inner join user_phones on users.id = user_phones.user_id
 inner join user_usernames on users.id = user_usernames.user_id
-WHERE users.approved = 0 AND users.pending = 1 and users.type = 0;""")
+inner join user_applications on users.id = user_applications.user_id where users.type = 0;""")
+
+    pending_users = user_model.objects.raw("""
+    select users.id, username, type, email, address, phone, user_applications.approved from users
+inner join user_emails on users.id = user_emails.user_id
+inner join user_phones on users.id = user_phones.user_id
+inner join user_usernames on users.id = user_usernames.user_id
+inner join user_applications on users.id = user_applications.user_id 
+WHERE user_applications.approved = 0 AND user_applications.pending = 1 and users.type = 0;""")
 
     coordinators = user_model.objects.raw("""
-    select users.id, username, type, email, address, phone, users.approved from users
+    select users.id, username, type, email, address, phone, user_applications.approved from users
     inner join user_emails on users.id = user_emails.user_id
     inner join user_phones on users.id = user_phones.user_id
     inner join user_usernames on users.id = user_usernames.user_id
-    WHERE users.approved = 1 AND users.pending = 0 AND users.type = 1;""")
+    inner join user_applications on users.id = user_applications.user_id 
+    WHERE user_applications.approved = 1 AND user_applications.pending = 0 AND users.type = 1;""")
 
     pending_coordinators = user_model.objects.raw("""
-    select users.id, username, type, email, address, phone, users.approved from users
+    select users.id, username, type, email, address, phone, user_applications.approved from users
 inner join user_emails on users.id = user_emails.user_id
 inner join user_phones on users.id = user_phones.user_id
 inner join user_usernames on users.id = user_usernames.user_id
-WHERE users.approved = 0 AND users.pending = 1 AND users.type = 1;""")
+inner join user_applications on users.id = user_applications.user_id 
+WHERE user_applications.approved = 0 AND user_applications.pending = 1 AND users.type = 1;""")
 
     return render(request, 'admin.html', {'all_user_data': all_users,
                                           "pending_user_data": pending_users,

@@ -13,7 +13,7 @@ END;
 
 CREATE TRIGGER forbid_deprivilege_admin BEFORE UPDATE ON users
 FOR EACH ROW
-WHEN OLD.type = 2 AND (NEW.type != 2 OR NOT NEW.approved)
+WHEN OLD.type = 2 AND (NEW.type != 2 OR NOT (SELECT approved FROM user_applications WHERE user_id=NEW.id LIMIT 1))
 BEGIN
     SELECT RAISE(ABORT, 'Admin user cannot be deprivileged or deregistered');
 END;
@@ -30,7 +30,7 @@ CREATE TRIGGER forbid_more_than_three_memberships_insert BEFORE INSERT ON member
 FOR EACH ROW
 WHEN (
     SELECT COUNT(*) from memberships WHERE user_id = NEW.user_id
-) = 3
+) = 4
 BEGIN
     SELECT RAISE(ABORT, 'A user cannot have more than three memberships');
 END;
@@ -39,7 +39,7 @@ CREATE TRIGGER forbid_more_than_three_memberships_update BEFORE UPDATE ON member
 FOR EACH ROW
 WHEN (
     SELECT COUNT(*) from memberships WHERE user_id = NEW.user_id
-) = 3
+) = 4
 BEGIN
     SELECT RAISE(ABORT, 'A user cannot have more than three memberships');
 END;
@@ -58,6 +58,6 @@ BEGIN
     DELETE FROM user_usernames WHERE user_id = NEW.user_id;
     DELETE FROM user_emails WHERE user_id = NEW.user_id;
     DELETE FROM memberships WHERE user_id = NEW.user_id;
-    DELETE FROM event_applications WHERE user_id = NEW.user_id;
+    DELETE FROM event_attendance_applications WHERE user_id = NEW.user_id;
     DELETE FROM users WHERE id = NEW.user_id;
 END;

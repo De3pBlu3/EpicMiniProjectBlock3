@@ -13,6 +13,9 @@
             <form action="/coordinator/clubcreationattempt" method="post">
                 {% csrf_token %}
                 <div class="row">
+                
+                <label for="club_name">Name: </label>
+                <input type="text" name="club-name" class="form-control" placeholder="Name" required>
                 <label for="club_description">Description: </label>
                 <textarea type="text" class="form-control" name="club-description" id="club-description">
                 </textarea>
