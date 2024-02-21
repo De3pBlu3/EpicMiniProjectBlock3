@@ -12,7 +12,8 @@
           <div class="col">
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Event #{{ event.id }}</h5>
+                <h5 class="card-title">{{event.title}}</h5>
+                <h6 class="card-subtitle text-body-secondary pb-1">{{ event.description }}</h6>
                 <h6 class="card-subtitle text-body-secondary pb-1">{{ event.venue }}</h6>
                 <h6 class="card-subtitle text-body-secondary pt-1">{{ event.event_start }} - {{ event.event_end }}</h6>
 

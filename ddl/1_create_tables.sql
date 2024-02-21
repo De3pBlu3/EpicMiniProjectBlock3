@@ -102,6 +102,10 @@ CREATE TABLE club_applications (
 CREATE TABLE events (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     club_id INTEGER,
+
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+
     event_start DATETIME,
     event_end DATETIME,
     venue_id INTEGER,

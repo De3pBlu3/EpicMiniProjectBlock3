@@ -24,6 +24,8 @@ def home(request):
             SELECT
                 events.id,
                 events.club_id,
+                title,
+                description,
                 event_start,
                 event_end,
                 venue_id,
