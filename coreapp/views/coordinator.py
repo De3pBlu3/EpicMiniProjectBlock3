@@ -13,8 +13,9 @@ def home(request):
     with connection.cursor() as cursor:
         # What club is this coordinator part of?
         cursor.execute("""
-            SELECT id, description
+            SELECT id, description, approved
             FROM clubs
+            JOIN club_applications ON clubs.id=club_applications.club_id
             WHERE coordinator=%s;
         """, [user["id"]])
 
@@ -23,6 +24,9 @@ def home(request):
 
         if club is None:
             return redirect("/coordinator/clubcreation")
+
+        if not club["approved"]:
+            return render(request, "pages/coordinator/pendingapproval.html")
 
         # What events is this club running right now?
         cursor.execute("""
@@ -52,8 +56,11 @@ def create_club(request):
 @require_http_methods(["POST"])
 def club_creation_attempt(request):
     with connection.cursor() as cursor:
-        cursor.execute("INSERT INTO clubs(description, coordinator) VALUES (%s, %s)", [
-                       request.POST["club-description"], request.session["user"]["id"]])
+        cursor.execute("INSERT INTO clubs(name, description, coordinator) VALUES (%s, %s)", [
+                       request.POST["club-name"], request.POST["club-description"], request.session["user"]["id"]])
+
+        cursor.execute(
+            "INSERT INTO club_applications(club_id) VALUES ((SELECT id FROM clubs WHERE last_insert_rowid() == clubs.ROWID))")
 
     return redirect("/coordinator/home")
 
