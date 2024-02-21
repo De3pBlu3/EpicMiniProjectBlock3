@@ -15,6 +15,7 @@ def home(request):
         cursor.execute("""
             SELECT id, description, approved
             FROM clubs
+            JOIN club_applications ON clubs.id=club_applications.club_id
             WHERE coordinator=%s;
         """, [user["id"]])
 
@@ -30,11 +31,14 @@ def home(request):
         # What events is this club running right now?
         cursor.execute("""
             SELECT
+                title,
+                description,
                 events.id,
+                event_start,
                 event_end,
                 COUNT(ea.user_id) as num_requested_attendees
             FROM events
-            LEFT JOIN event_applications ea ON ea.event_id=events.id
+            LEFT JOIN event_attendance_applications ea ON ea.event_id=events.id
             WHERE events.club_id=%s
             GROUP BY events.id
         """, [club["id"]])
@@ -57,6 +61,10 @@ def club_creation_attempt(request):
     with connection.cursor() as cursor:
         cursor.execute("INSERT INTO clubs(description, coordinator) VALUES (%s, %s)", [
                        request.POST["club-description"], request.session["user"]["id"]])
+
+        cursor.execute(
+            "INSERT INTO club_names(club_id, name) VALUES ((SELECT id FROM clubs WHERE last_insert_rowid() == clubs.ROWID), %s)", [request.POST["club-name"]])
+
         cursor.execute(
             "INSERT INTO club_applications(club_id) VALUES ((SELECT id FROM clubs WHERE last_insert_rowid() == clubs.ROWID))")
 
@@ -94,9 +102,9 @@ def event_creation_attempt(request):
     # inserting into database
     with connection.cursor() as cursor:
         cursor.execute("""
-                INSERT INTO events (club_id, event_start, event_end, venue_id) 
-                VALUES (%s, %s, %s, %s)""",
-                [club["id"], request.POST["start-date"], request.POST["end-date"], venue_id])
+                INSERT INTO events (club_id, title, description, event_start, event_end, venue_id) 
+                VALUES (%s, %s, %s, %s, %s, %s)""",
+                [club["id"], request.POST["title"], request.POST["description"], request.POST["start-date"], request.POST["end-date"], venue_id])
     
     # redirecting into home page
     return redirect("/coordinator/home")

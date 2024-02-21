@@ -24,6 +24,8 @@ def home(request):
             SELECT
                 events.id,
                 events.club_id,
+                title,
+                description,
                 event_start,
                 event_end,
                 venue_id,
@@ -32,7 +34,7 @@ def home(request):
                 ea.approved as user_application_status
             FROM events
             JOIN venues on events.venue_id = venues.id
-            LEFT JOIN event_applications ea ON events.id = ea.event_id and ea.user_id=%s;
+            LEFT JOIN event_attendance_applications ea ON events.id = ea.event_id and ea.user_id=%s;
         """, [user["id"]])
         
         event_data = utils.fetchall_dict(cursor)
