@@ -91,6 +91,20 @@ CREATE TABLE events (
     FOREIGN KEY (venue_id) REFERENCES venues (id)
 );
 
+CREATE TABLE event_attendance_applications (
+    event_id INTEGER PRIMARY KEY,
+    user_id INTEGER,
+
+    approved BOOL DEFAULT FALSE,
+    pending BOOL DEFAULT TRUE,
+
+    created DATETIME,
+    updated DATETIME,
+
+    FOREIGN KEY (event_id) REFERENCES events (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
 CREATE TABLE venues (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     club_id INTEGER,

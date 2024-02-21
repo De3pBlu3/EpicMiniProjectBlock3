@@ -51,6 +51,7 @@ def check_credentials(username, password):
             SELECT id, password_hash, approved, type
             FROM users
             JOIN user_usernames ON users.id=user_usernames.user_id
+            JOIN user_applications ON users.id=user_applications.user_id
             WHERE user_usernames.username=%s
         """, (username,))
         

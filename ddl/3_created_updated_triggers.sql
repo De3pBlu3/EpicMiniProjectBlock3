@@ -79,6 +79,16 @@ BEGIN
     UPDATE events SET updated = datetime('now') WHERE id = NEW.id;
 END;
 
+CREATE TRIGGER event_attendance_applications_created_timestamp AFTER INSERT ON event_attendance_applications
+BEGIN
+    UPDATE event_attendance_applications SET created = datetime('now') WHERE event_id = NEW.event_id;
+END;
+
+CREATE TRIGGER event_attendance_applications_updated_timestamp AFTER UPDATE ON event_attendance_applications
+BEGIN
+    UPDATE event_attendance_applications SET updated = datetime('now') WHERE event_id = NEW.event_id;
+END;
+
 CREATE TRIGGER venues_created_timestamp AFTER INSERT ON venues
 BEGIN
     UPDATE venues SET created = datetime('now') WHERE id = NEW.id;
