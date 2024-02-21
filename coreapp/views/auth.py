@@ -51,6 +51,7 @@ def check_credentials(username, password):
             SELECT id, password_hash, approved, type
             FROM users
             JOIN user_usernames ON users.id=user_usernames.user_id
+            JOIN user_applications ON users.id=user_applications.user_id
             WHERE user_usernames.username=%s
         """, (username,))
         
@@ -104,7 +105,14 @@ def validate_details(dict):
     
     if not is_valid_password(password):
         return "Password is invalid", None
-    
+
+    # added code to check if the username already exists
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT EXISTS(SELECT 1 FROM user_usernames WHERE username=%s)", [username])
+        exists = cursor.fetchone()[0]
+        if exists:
+            return "Username already exists", None
+            
     hashed_password = bcrypt.hashpw(dict.get("password").encode('utf-8'), bcrypt.gensalt(rounds=12)).decode("utf-8")
     
     if dict.get("user_type") == "user":

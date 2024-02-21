@@ -38,8 +38,7 @@ if __name__ == "__main__":
         ("user_phones", "user_id"),
         ("memberships", "user_id"),
         ("clubs", "id"),
-        ("club_applications", "club_id"),
         ("events", "id"),
-        ("event_applications", "event_id"),
+        ("event_attendance_applications", "event_id"),
         ("venues", "id")
     ])

@@ -15,6 +15,13 @@ urlpatterns = [
     
     path('home', user.home),
     
-    
-    path('coordinator/home', coordinator.home)
+ 
+    path('coordinator/home', coordinator.home),
+    path('coordinator/clubcreation', coordinator.create_club),   
+    path('coordinator/clubcreationattempt', coordinator.club_creation_attempt),
+    path('coordinator/eventcreation', coordinator.create_event),
+    path('coordinator/eventcreationattempt', coordinator.event_creation_attempt),
+
+    path('user/updatedetails', user.update_user),
+    path('user/updatedetailsattempt', user.update_attempt)
 ]
