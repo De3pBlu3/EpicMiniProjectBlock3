@@ -30,7 +30,7 @@ CREATE TRIGGER forbid_more_than_three_memberships_insert BEFORE INSERT ON member
 FOR EACH ROW
 WHEN (
     SELECT COUNT(*) from memberships WHERE user_id = NEW.user_id
-) = 3
+) = 4
 BEGIN
     SELECT RAISE(ABORT, 'A user cannot have more than three memberships');
 END;
@@ -39,7 +39,7 @@ CREATE TRIGGER forbid_more_than_three_memberships_update BEFORE UPDATE ON member
 FOR EACH ROW
 WHEN (
     SELECT COUNT(*) from memberships WHERE user_id = NEW.user_id
-) = 3
+) = 4
 BEGIN
     SELECT RAISE(ABORT, 'A user cannot have more than three memberships');
 END;
