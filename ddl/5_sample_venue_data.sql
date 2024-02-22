@@ -13,9 +13,10 @@ commit;
 
 begin;
 INSERT INTO clubs(description, coordinator) VALUES ('Club C description', 4);
-insert into club_applications(club_id, approved, pending) values ((SELECT last_insert_rowid()), TRUE, FALSE);
+insert into club_applications(club_id, approved, pending) values ((SELECT last_insert_rowid()), FALSE, TRUE);
 insert into club_names(club_id, name) values ((SELECT last_insert_rowid()), 'Club C name');
 commit;
+
 
 
 insert into memberships (user_id, club_id) values (5, 1);

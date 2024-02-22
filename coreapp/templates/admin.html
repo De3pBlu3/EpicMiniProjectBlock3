@@ -57,6 +57,13 @@
                         </button>
                     </li>
 
+                    <li>
+                        <button class="btn py-3 px-2 sectionBtn" data-section="club_modification" title=""
+                                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                            <i style="font-size: 1.5rem;" class="bi bi-book fs-1"></i>
+                        </button>
+                    </li>
+
                 </ul>
             </div>
         </div>
@@ -303,6 +310,83 @@
 {#                      </div>#}
 {#                    </div>#}
             </div>
+            <div id="club_modification" class="section">
+                <div class=all_clubs">
+                    <div class="col-lg-10">
+                        <div class="card lg-5">
+                            <div class="card-header">
+                                <h2>All clubs</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="overflow-auto" style="max-height: 400px;">
+                                    <table id="all_clubs_table" data-toggle="table" data-multiple-select-row="true"
+                                           data-click-to-select="true" data-pagination="true" data-search="true"
+                                           data-buttons="all_clubs_buttons">
+                                        <thead>
+                                        <tr>
+                                            <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Coordinator</th>
+                                        </tr>
+                                        </thead>
+                                       <tbody>
+                                            {% for club in all_clubs %}
+                                                <tr data-row-id="{{ club.id }}">
+                                                   <td></td> <!-- Add this line -->
+                                                    <td>{{ club.id }}</td>
+                                                    <td>{{ club.name }}</td>
+                                                    <td>{{ club.description }}</td>
+                                                    <td>{{ club.username }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pending_clubs">
+                    <div class="col-lg-10">
+                        <div class="card mt-5">
+                            <div class="card-header">
+                                <h2>Pending clubs</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="overflow-auto" style="max-height: 400px;">
+                                    <table id="pending_clubs_table" data-toggle="table" data-multiple-select-row="true"
+                                           data-click-to-select="true" data-pagination="true" data-search="true"
+                                           data-buttons="pending_clubs_buttons">
+                                        <thead>
+                                        <tr>
+                                            <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Coordinator</th>
+                                        </tr>
+                                        </thead>
+                                           <tbody>
+                                                {% for club in pending_clubs %}
+                                                        <tr data-row-id="{{ club.id }}">
+                                                           <td></td> <!-- Add this line -->
+                                                            <td>{{ club.id }}</td>
+                                                            <td>{{ club.name }}</td>
+                                                            <td>{{ club.description }}</td>
+                                                            <td>{{ club.username }}</td>
+                                                        </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -318,18 +402,20 @@
     {{ deregister_form }}
 </form>
 
+<form id="changeClubForm" action="/admin/changeclubapproval" method="post">
+    {% csrf_token %}
+    {{ change_club_form }}
+</form>
+
 <script>
     function deregisterUser(tableID) {
         let table = $(tableID);
         // getSelectedRow
         let x = table.bootstrapTable('getSelections');
-        let username = x[0]['1'];
-        console.log(username);
 
-        document.getElementById('register_username').value = username;
+        document.getElementById('register_username').value = x[0]['1'];
         document.getElementById('deregisterForm').submit();
     }
-
     function approveUser(tableID) {
         let table = $(tableID);
         // getSelectedRow
@@ -341,7 +427,6 @@
         document.getElementById('id_registered').value = registered;
         document.getElementById('approvalForm').submit();
     }
-
     function rejectUser(tableID) {
         let table = $(tableID);
         // getSelectedRow
@@ -352,6 +437,29 @@
         document.getElementById('id_username').value = username;
         document.getElementById('id_registered').value = registered;
         document.getElementById('approvalForm').submit();
+    }
+
+    function approveClub(tableID) {
+        let table = $(tableID);
+        // getSelectedRow
+        let x = table.bootstrapTable('getSelections');
+        let club_id = x[0]['1'];
+        let registered = 1;
+
+        document.getElementById('club_club_id').value = club_id;
+        document.getElementById('club_approved').value = registered;
+        document.getElementById('changeClubForm').submit();
+    }
+    function rejectClub(tableID) {
+        let table = $(tableID);
+        // getSelectedRow
+        let x = table.bootstrapTable('getSelections');
+        let club_id = x[0]['1'];
+        let registered = 0;
+
+        document.getElementById('club_club_id').value = club_id;
+        document.getElementById('club_approved').value = registered;
+        document.getElementById('changeClubForm').submit();
     }
 
 
@@ -369,7 +477,6 @@
             }
         }
     }
-
     function pending_users_buttons() {
         return {
             btnUsersApprove: {
@@ -394,7 +501,6 @@
             }
         }
     }
-
     function pending_coordinators_buttons() {
         return {
             btnCoordinatorsApprove: {
@@ -416,6 +522,30 @@
                 },
                 attributes: {
                     title: 'Reject a coordinator from the system'
+                }
+            }
+        }
+    }
+    function pending_clubs_buttons() {
+        return {
+            btnClubsApprove: {
+                text: 'Approve Club',
+                icon: 'bi bi-plus-circle',
+                event: function () {
+                    approveClub("#pending_clubs_table")
+                },
+                attributes: {
+                    title: 'Approve a club to the system'
+                }
+            },
+            btnClubsReject: {
+                text: 'Reject Club',
+                icon: 'bi bi-dash-circle',
+                event: function () {
+                    rejectClub("#pending_clubs_table")
+                },
+                attributes: {
+                    title: 'Reject a club from the system'
                 }
             }
         }
@@ -442,3 +572,4 @@
 
 </body>
 </html>
+
