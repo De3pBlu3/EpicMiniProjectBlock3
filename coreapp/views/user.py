@@ -117,7 +117,7 @@ def add_membership(request):
     user_id = request.session["user"]["id"]
     club_id = request.POST.get("club_id")
     with connection.cursor() as cursor:
-        cursor.execute("SELECT COUNT(*) FROM memberships WHERE user_id=%s", [user_id])
+        cursor.execute("SELECT COUNT(*) FROM memberships WHERE user_id=%s AND NOT (pending = FALSE AND approved = FALSE)", [user_id])
         count = cursor.fetchone()[0]
 
     if count < 3:
