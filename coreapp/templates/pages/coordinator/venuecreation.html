@@ -10,13 +10,14 @@
     <div class="container text-center align-center">
         <div class="col">
             <h1 class="h2">Create a venue</h1>
-            <form action="/venuecreationattempt" method="post">
+            <form action="/coordinator/venuecreationattempt" method="post">
+                {% csrf_token %}
                 <label for="name">Name</label>
                 <input type="text" name="name" class="form-control w-50 mx-auto" placeholder="Name" required>
-                <label for="venue">X Coordinate</label>
-                <input type="text" name="x_coord" class="form-control w-50 mx-auto" placeholder="Latitude" required>
-                <label for="venue">Y Coordinate</label>
-                <input type="text" name="y_coord" class="form-control w-50 mx-auto" placeholder="Longitude" required>
+                <label for="venue">Club Name</label>
+                <input type="text" name="club" class="form-control w-50 mx-auto" placeholder="Club Name" required>
+                <label for="venue">Venue</label>
+                <input type="text" name="venue" class="form-control w-50 mx-auto" placeholder="Venue" required>
                 <button type="submit" class="btn mt-2 btn-primary">Create</button>
             </form>
           </div>

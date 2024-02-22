@@ -21,6 +21,8 @@ urlpatterns = [
     path('coordinator/clubcreationattempt', coordinator.club_creation_attempt),
     path('coordinator/eventcreation', coordinator.create_event),
     path('coordinator/eventcreationattempt', coordinator.event_creation_attempt),
+    path('coordinator/venuecreation', coordinator.venue_creation),
+    path('coordinator/venuecreationattempt', coordinator.venue_creation_attempt),
 
     path('user/updatedetails', user.update_user),
     path('user/updatedetailsattempt', user.update_attempt),

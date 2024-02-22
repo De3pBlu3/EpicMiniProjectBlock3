@@ -120,5 +120,29 @@ def check_venue_exists(venue):
         print(result)
         return result[0] if result else False
 
+@coordinator_login_required
+def venue_creation(request):
+    return render(request, "pages/coordinator/venuecreation.html")
 
+@require_http_methods(["POST"])
+@coordinator_login_required
+def venue_creation_attempt(request):
+    user_id = request.session["user"]["id"]
+    with connection.cursor() as cursor:
+        cursor.execute ('SELECT id FROM clubs WHERE coordinator=%s', [user_id])
+        club_id = cursor.fetchone()[0]
+    venue = request.POST.get("venue")
     
+    # if field(s) is empty
+    if not (venue and user_id and club_id):
+        return HttpResponse("Input required")
+    
+    # if venue already exists 
+    if check_venue_exists(venue):
+        return HttpResponse("Venue Already exists")
+    
+    with connection.cursor() as cursor:
+        cursor.execute("INSERT INTO venues (club_id, venue) VALUES (%s, %s)", [club_id, venue])
+
+    # maybe return a success message? 
+    return redirect("/coordinator/home")
