@@ -1,6 +1,16 @@
 /*
+    first_user_admin
+    "The first registered user becomes the admin coordinator ..."
+*/
+CREATE TRIGGER first_user_admin AFTER INSERT ON users
+WHEN (SELECT COUNT(*) from users) = 1
+BEGIN
+    UPDATE users SET type = 2 WHERE id = NEW.id;
+END;
+
+/*
     forbid_delete_admin
-    "The first registered user becomes the admin coordinator, a non-deletable account"
+    "... a non-deletable account"
 */
 
 CREATE TRIGGER forbid_delete_admin BEFORE DELETE ON users
@@ -61,3 +71,16 @@ BEGIN
     DELETE FROM event_attendance_applications WHERE user_id = NEW.user_id;
     DELETE FROM users WHERE id = NEW.user_id;
 END;
+
+
+CREATE TRIGGER delete_club_if_rejected
+AFTER UPDATE OF approved, pending ON club_applications
+FOR EACH ROW
+WHEN NEW.approved = 0 AND NEW.pending = 0
+BEGIN
+    DELETE FROM memberships WHERE club_id = NEW.club_id;
+    DELETE FROM club_names WHERE club_id = NEW.club_id;
+    DELETE FROM clubs WHERE id = NEW.club_id;
+    delete from events where club_id = NEW.club_id;
+END;
+

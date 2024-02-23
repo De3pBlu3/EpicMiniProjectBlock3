@@ -64,8 +64,8 @@ TEMPLATES = [
 
 # By default, Django stores cache keys in our database
 # To meet the project requirements, and ensure *only* our hand-crafted tables are present,
-# have it use an in-memory cache to store sessions instead.
-SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+# have it use an temp file to store sessions instead.
+SESSION_ENGINE = "django.contrib.sessions.backends.file"
 
 WSGI_APPLICATION = 'clubhub.wsgi.application'
 
