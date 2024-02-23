@@ -1,6 +1,16 @@
 /*
+    first_user_admin
+    "The first registered user becomes the admin coordinator ..."
+*/
+CREATE TRIGGER first_user_admin AFTER INSERT ON users
+WHEN (SELECT COUNT(*) from users) = 1
+BEGIN
+    UPDATE users SET type = 2 WHERE id = NEW.id;
+END;
+
+/*
     forbid_delete_admin
-    "The first registered user becomes the admin coordinator, a non-deletable account"
+    "... a non-deletable account"
 */
 
 CREATE TRIGGER forbid_delete_admin BEFORE DELETE ON users
