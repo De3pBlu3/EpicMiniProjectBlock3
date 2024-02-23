@@ -86,3 +86,18 @@ def insert_updated_user(user_id, info):
         cursor.execute("UPDATE user_phones SET phone=%s WHERE user_id=%s", [phonenumber, user_id])
         cursor.execute("UPDATE user_emails SET email=%s WHERE user_id=%s", [email, user_id])
         cursor.execute("UPDATE user_usernames SET username=%s WHERE user_id=%s", [username, user_id])
+
+@require_http_methods(["POST"])
+@user_login_required
+def add_event_application(request):
+    user_id = request.session["user"]["id"]
+    event_id = request.POST.get("event_id")
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) FROM event_attendance_applications WHERE user_id=%s AND event_id=%s", [user_id, event_id])
+        count = cursor.fetchone()[0]
+        
+    if count == 0:
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO event_attendance_applications(user_id, event_id, approved) VALUES(%s, %s, FALSE)", [user_id, event_id])
+    return redirect('/home')
+
