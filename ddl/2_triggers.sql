@@ -69,8 +69,8 @@ FOR EACH ROW
 WHEN NEW.approved = 0 AND NEW.pending = 0
 BEGIN
     DELETE FROM memberships WHERE club_id = NEW.club_id;
-    DELETE FROM event_attendance_applications WHERE club_id = NEW.club_id;
     DELETE FROM club_names WHERE club_id = NEW.club_id;
     DELETE FROM clubs WHERE id = NEW.club_id;
+    delete from events where club_id = NEW.club_id;
 END;
 
