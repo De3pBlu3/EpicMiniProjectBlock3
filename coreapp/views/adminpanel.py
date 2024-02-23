@@ -183,9 +183,10 @@ def all_user_admin(request):
     # split all_clubs into a dictionary of clubs as key and list of users in each club as value
     club_dict = {}
     for club in all_memberships:
-        if club["name"] not in club_dict:
-            club_dict[club["name"]] = []
-        club_dict[club["name"]].append(club["username"])
+        key = (club["name"], club["id"])
+        if key not in club_dict:
+            club_dict[key] = []
+        club_dict[key].append(club["username"])
 
     return render(request, 'admin.html', {'all_user_data': all_users,
                                           "pending_user_data": pending_users,
