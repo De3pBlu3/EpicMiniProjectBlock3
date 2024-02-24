@@ -87,6 +87,7 @@ def insert_updated_user(user_id, info):
         cursor.execute("UPDATE user_emails SET email=%s WHERE user_id=%s", [email, user_id])
         cursor.execute("UPDATE user_usernames SET username=%s WHERE user_id=%s", [username, user_id])
         
+@user_login_required
 def display_clubs(request):
     user = request.session["user"]
     with connection.cursor() as cursor:
