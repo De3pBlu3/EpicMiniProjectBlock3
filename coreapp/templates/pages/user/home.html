@@ -19,9 +19,16 @@
 
                 {% if event.user_has_applied %}
                   <i>{{ event.user_application_status|yesno:"You're going!,Application pending" }}</i>
+                {% else %}
+                <form method="post" action="/user/addeventapplication">
+                  {% csrf_token %}
+
+                  <input type="hidden" name="event_id" value="{{ event.id }}" />
+                  <input type="submit" value="Register" class="btn btn-primary float-end" />
+                </form>
+
                 {% endif %}
 
-                <a href="/event/{{event.id}}" class="stretched-link float-end">see more →</a>
               </div>
             </div>
           </div>

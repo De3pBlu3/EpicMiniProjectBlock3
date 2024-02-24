@@ -86,6 +86,46 @@ def insert_updated_user(user_id, info):
         cursor.execute("UPDATE user_phones SET phone=%s WHERE user_id=%s", [phonenumber, user_id])
         cursor.execute("UPDATE user_emails SET email=%s WHERE user_id=%s", [email, user_id])
         cursor.execute("UPDATE user_usernames SET username=%s WHERE user_id=%s", [username, user_id])
+        
+@user_login_required
+def display_clubs(request):
+    user = request.session["user"]
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT c.id AS club_id, c.description, 
+            CASE WHEN m.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS applied,
+            CASE WHEN m.approved THEN TRUE ELSE FALSE END AS is_accepted
+            FROM clubs c
+            LEFT JOIN memberships m ON c.id = m.club_id AND m.user_id = %s""", [user["id"]])
+        clubs_data = cursor.fetchall()
+
+    clubs= []
+
+    for club in clubs_data:
+        clubs.append({
+            'club_id': club[0],
+            'name': club[1],
+            'applied': club[2],
+            'is_accepted': club[3]
+        })
+
+        
+
+    return render(request, "pages/user/clubview.html", {'clubs': clubs})
+
+@require_http_methods(["POST"])
+@user_login_required
+def add_membership(request):
+    user_id = request.session["user"]["id"]
+    club_id = request.POST.get("club_id")
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT COUNT(*) FROM memberships WHERE user_id=%s AND NOT (pending = FALSE AND approved = FALSE)", [user_id])
+        count = cursor.fetchone()[0]
+
+    if count < 3:
+        with connection.cursor() as cursor:
+            cursor.execute("INSERT INTO memberships(user_id, club_id, approved, pending) VALUES(%s, %s, 0, 1)", [user_id, club_id])
+    return redirect('/home/clubview')
+
 
 @require_http_methods(["POST"])
 @user_login_required
@@ -98,32 +138,32 @@ def add_event_application(request):
         cursor.execute("SELECT club_id FROM events WHERE id=%s", [event_id])
         event_club_id = cursor.fetchone()[0]
 
-    # check if the user is member of the club and is approved
-    cursor.execute("""
-        SELECT COUNT(*)
-        FROM memberships
-        WHERE user_id=%s AND club_id=%s AND approved=TRUE
-    """, [user_id, event_club_id])
-    is_member_and_approved = cursor.fetchone()[0] > 0
-
-    # check if user has applied already
-    cursor.execute("""
-        SELECT COUNT(*)
-        FROM event_attendance_applications
-        WHERE user_id=%s AND event_id=%s
-    """, [user_id, event_id])
-    already_applied = cursor.fetchone()[0] > 0
-
-    # automatically approve
-    if is_member_and_approved and not already_applied:
+        # check if the user is member of the club and is approved
         cursor.execute("""
-            INSERT INTO event_attendance_applications(event_id, user_id, approved, pending)
-            VALUES(%s, %s, TRUE, FALSE)
-        """, [event_id, user_id])
-    elif not already_applied:
+            SELECT COUNT(*)
+            FROM memberships
+            WHERE user_id=%s AND club_id=%s AND approved=TRUE
+        """, [user_id, event_club_id])
+        is_member_and_approved = cursor.fetchone()[0] > 0
+
+        # check if user has applied already
         cursor.execute("""
-            INSERT INTO event_attendance_applications(event_id, user_id, approved, pending)
-            VALUES(%s, %s, FALSE, TRUE)
-        """, [event_id, user_id])
+            SELECT COUNT(*)
+            FROM event_attendance_applications
+            WHERE user_id=%s AND event_id=%s
+        """, [user_id, event_id])
+        already_applied = cursor.fetchone()[0] > 0
+
+        # automatically approve
+        if is_member_and_approved and not already_applied:
+            cursor.execute("""
+                INSERT INTO event_attendance_applications(event_id, user_id, approved, pending)
+                VALUES(%s, %s, TRUE, FALSE)
+            """, [event_id, user_id])
+        elif not already_applied:
+            cursor.execute("""
+                INSERT INTO event_attendance_applications(event_id, user_id, approved, pending)
+                VALUES(%s, %s, FALSE, TRUE)
+            """, [event_id, user_id])
 
     return redirect('/home')
