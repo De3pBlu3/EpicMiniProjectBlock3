@@ -92,12 +92,38 @@ def insert_updated_user(user_id, info):
 def add_event_application(request):
     user_id = request.session["user"]["id"]
     event_id = request.POST.get("event_id")
+    
+    # get the club id from the event
     with connection.cursor() as cursor:
-        cursor.execute("SELECT COUNT(*) FROM event_attendance_applications WHERE user_id=%s AND event_id=%s", [user_id, event_id])
-        count = cursor.fetchone()[0]
-        
-    if count == 0:
-        with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO event_attendance_applications(user_id, event_id, approved) VALUES(%s, %s, FALSE)", [user_id, event_id])
-    return redirect('/home')
+        cursor.execute("SELECT club_id FROM events WHERE id=%s", [event_id])
+        event_club_id = cursor.fetchone()[0]
 
+    # check if the user is member of the club and is approved
+    cursor.execute("""
+        SELECT COUNT(*)
+        FROM memberships
+        WHERE user_id=%s AND club_id=%s AND approved=TRUE
+    """, [user_id, event_club_id])
+    is_member_and_approved = cursor.fetchone()[0] > 0
+
+    # check if user has applied already
+    cursor.execute("""
+        SELECT COUNT(*)
+        FROM event_attendance_applications
+        WHERE user_id=%s AND event_id=%s
+    """, [user_id, event_id])
+    already_applied = cursor.fetchone()[0] > 0
+
+    # automatically approve
+    if is_member_and_approved and not already_applied:
+        cursor.execute("""
+            INSERT INTO event_attendance_applications(event_id, user_id, approved, pending)
+            VALUES(%s, %s, TRUE, FALSE)
+        """, [event_id, user_id])
+    elif not already_applied:
+        cursor.execute("""
+            INSERT INTO event_attendance_applications(event_id, user_id, approved, pending)
+            VALUES(%s, %s, FALSE, TRUE)
+        """, [event_id, user_id])
+
+    return redirect('/home')
