@@ -12,10 +12,7 @@ urlpatterns = [
     path('admin', adminpanel.all_user_admin),
     path('admin/changeapproval', adminpanel.user_change_approval),
     path('admin/deregister', adminpanel.user_deregister),
-    path('admin/changeclubapproval', adminpanel.club_change_approval),
-    
-    path('home', user.home),
-    
+    path('admin/changeclubapproval', adminpanel.club_change_approval),    
  
     path('coordinator/home', coordinator.home),
     path('coordinator/clubcreation', coordinator.create_club),   
@@ -25,9 +22,10 @@ urlpatterns = [
     path('coordinator/venuecreation', coordinator.venue_creation),
     path('coordinator/venuecreationattempt', coordinator.venue_creation_attempt),
 
+    path('home', user.home),
     path('user/updatedetails', user.update_user),
     path('user/updatedetailsattempt', user.update_attempt),
+    path('user/addeventapplication', user.add_event_application),
     path('home/clubview', user.display_clubs),
-    path('home/joinclub', user.add_membership),
-    path('coordinator/home', coordinator.home)
+    path('home/joinclub', user.add_membership)
 ]
