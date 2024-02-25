@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="row pt-5">
+    <div class="row">
+        <div class="row align-center" ><h2 class="align-center">Your Clubs</h2></div>
+        {% for club in clubs %}
+          {% if club.is_accepted %}
+          <div class="row border rounded bg-secondary m-1">
+          <div class="col-4">
+             <h4 class="m-1">{{ club.name }}</h4>
+          </div>
+          <div class="col-6 d-flex justify-content-center">
+                <i>{{ club.description }}</i>
+          </div>
+          <div class="col-1">
+          </div>
+          </div>
+          {% endif %}
+        {% endfor %}
+    </div>
+  </div>
+
+  <div class="row">
+      <h2>Your Club Applications</h2>
+        {% for club in clubs %}
+          {% if club.applied and not club.is_accepted %}
+            <div class="row border rounded bg-secondary m-1">
+          <div class="col-4">
+             <h4 class="m-1">{{ club.name }}</h4>
+          </div>
+          <div class="col-6 d-flex justify-content-center">
+                <i>{{ club.description }}</i>
+          </div>
+          <div class="col-1">
+          </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+  </div>
+
+  <div class="row">
+
+    <h2>Other Clubs</h2>
+
+      {% for club in clubs %}
+        {% if not club.applied %}
+            <div class="row border rounded bg-secondary m-1">
+          <div class="col-4">
+             <h4 class="m-1">{{ club.name }}</h4>
+          </div>
+          <div class="col-6 d-flex justify-content-center">
+                <i>{{ club.description }}</i>
+          </div>
+          <div class="col-1">
+              <form action="/home/joinclub" method="post">
+                            {% csrf_token %}
+              <input type="hidden" name="club_id" value="{{ club.club_id }}">
+              <button type="submit" class="btn btn-dark my-1 float-right">Join</button>
+            </form>
+          </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+</div>
+  </div>
+{% endblock %}

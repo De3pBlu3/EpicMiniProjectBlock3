@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container text-center align-center">
+        <div class="row">
+            <h1 class="h3 my-auto">Create a venue</h1>
+            <form action="/coordinator/venuecreationattempt" class="" method="post">
+                {% csrf_token %}
+{#                <label for="venue">Venue</label>#}
+                <input type="text" name="venue" class="form-control w-50 my-2 mx-auto" placeholder="Venue Name" required>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+
+        </div>
+        </div>
+    </div>
+{% endblock %}

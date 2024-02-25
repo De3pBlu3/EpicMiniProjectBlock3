@@ -97,78 +97,32 @@ def all_user_admin(request):
 
     # TODO there may be a way to use views  for this, it seems silly to do two similar queries
     with connection.cursor() as cursor:
-        cursor.execute("""
-            SELECT users.id, username, type, email, address, phone, user_applications.approved 
-            FROM users
-            INNER JOIN user_emails ON users.id = user_emails.user_id
-            INNER JOIN user_phones ON users.id = user_phones.user_id
-            INNER JOIN user_usernames ON users.id = user_usernames.user_id
-            INNER JOIN user_applications ON users.id = user_applications.user_id 
-            WHERE users.type = 0;
-        """)
+        cursor.execute("SELECT * FROM all_user_info WHERE type = 0")
         all_users = utils.fetchall_dict(cursor)
-
-    with connection.cursor() as cursor:
-        cursor.execute("""
-            SELECT users.id, username, type, email, address, phone, user_applications.approved 
-            FROM users
-            INNER JOIN user_emails ON users.id = user_emails.user_id
-            INNER JOIN user_phones ON users.id = user_phones.user_id
-            INNER JOIN user_usernames ON users.id = user_usernames.user_id
-            INNER JOIN user_applications ON users.id = user_applications.user_id
-            WHERE user_applications.approved = 0 AND user_applications.pending = 1 AND users.type = 0;
-        """)
+        
+        cursor.execute("SELECT * FROM all_user_info WHERE approved = 0 AND pending = 1 AND type = 0")
         pending_users = utils.fetchall_dict(cursor)
 
-    with connection.cursor() as cursor:
-        cursor.execute("""
-            SELECT users.id, username, type, email, address, phone, user_applications.approved 
-            FROM users
-            INNER JOIN user_emails ON users.id = user_emails.user_id
-            INNER JOIN user_phones ON users.id = user_phones.user_id
-            INNER JOIN user_usernames ON users.id = user_usernames.user_id
-            INNER JOIN user_applications ON users.id = user_applications.user_id
-            WHERE user_applications.approved = 1 AND user_applications.pending = 0 AND users.type = 1;
-        """)
+        cursor.execute("SELECT * FROM all_user_info WHERE approved = 1 AND pending = 0 AND type = 1")
         coordinators = utils.fetchall_dict(cursor)
 
-    with connection.cursor() as cursor:
-        cursor.execute("""
-            SELECT users.id, username, type, email, address, phone, user_applications.approved 
-            FROM users
-            INNER JOIN user_emails ON users.id = user_emails.user_id
-            INNER JOIN user_phones ON users.id = user_phones.user_id
-            INNER JOIN user_usernames ON users.id = user_usernames.user_id
-            INNER JOIN user_applications ON users.id = user_applications.user_id
-            WHERE user_applications.approved = 0 AND user_applications.pending = 1 AND users.type = 1;
-        """)
+        cursor.execute("SELECT * FROM all_user_info WHERE approved = 0 AND pending = 1 AND type = 1")
         pending_coordinators = utils.fetchall_dict(cursor)
 
-    with connection.cursor() as cursor:
         cursor.execute("""
-            SELECT clubs.id, clubs.description, club_names.name, user_usernames.username
-            FROM clubs
-            INNER JOIN club_names ON clubs.id = club_names.club_id
-            INNER JOIN club_applications ON clubs.id = club_applications.club_id
-            inner join user_usernames on clubs.coordinator = user_usernames.user_id
-            WHERE club_applications.approved = 1 AND club_applications.pending = 0
-            ORDER BY clubs.id;
+            SELECT * FROM all_club_info
+            WHERE approved = 1 AND pending = 0
+            ORDER BY id;
         """)
         clubs = utils.fetchall_dict(cursor)
 
-    with connection.cursor() as cursor:
         cursor.execute("""
-            SELECT clubs.id, clubs.description, club_names.name, user_usernames.username
-            FROM clubs
-            INNER JOIN club_names ON clubs.id = club_names.club_id
-            INNER JOIN club_applications ON clubs.id = club_applications.club_id
-            inner join user_usernames on clubs.coordinator = user_usernames.user_id
-            WHERE club_applications.approved = 0 AND club_applications.pending = 1
-            ORDER BY clubs.id;
+            SELECT * FROM all_club_info
+            WHERE approved = 0 AND pending = 1
+            ORDER BY id;
             """)
         pending_clubs = utils.fetchall_dict(cursor)
 
-    with connection.cursor() as cursor:
         cursor.execute("""
             SELECT clubs.id, club_names.name, clubs.description, user_usernames.username
             FROM clubs
@@ -177,9 +131,10 @@ def all_user_admin(request):
             INNER JOIN user_usernames ON memberships.user_id = user_usernames.user_id
             ORDER BY clubs.id;
             """)
+
         all_memberships = utils.fetchall_dict(cursor)
 
-    # split all_clubs into a dictionary of clubs as key and list of users in each club as value
+    # split all_clubs into a dictionary of (club name, club_id) as key and list of users in each club as value
     club_dict = {}
     for club in all_memberships:
         key = (club["name"], club["id"])

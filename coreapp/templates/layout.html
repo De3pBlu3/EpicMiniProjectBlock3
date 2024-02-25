@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -46,9 +46,18 @@
                 </li>
                 
                 <!-- TODO: differing navbars by user profile type -->
-                <a class="list-group-item active" href="#">Upcoming Events</a>
-                <a class="list-group-item" href="#">Clubs</a>
-                <a class="list-group-item" href="#">↳ My Clubs</a>
+                {% if user_type == 1 %}
+                    <a class="list-group-item" href="/coordinator/home">Upcoming Events</a>
+                    <a class="list-group-item" href="/coordinator/venuecreation">Create a venue </a>
+
+                {% endif %}
+
+
+                {% if user_type == 0 %}
+                <a class="list-group-item" href="/home">Upcoming Events</a>
+                <a class="list-group-item" href="/home/clubview">Clubs</a>
+              {% endif %}
+
                 <a class="list-group-item" href="/user/updatedetails">My Profile</a>
               </ul>
             </div>
