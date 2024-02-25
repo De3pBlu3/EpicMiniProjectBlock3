@@ -46,7 +46,8 @@ def home(request):
         event_data = utils.fetchall_dict(cursor)
 
     return render(request, "pages/coordinator/home.html", {
-        "events": event_data
+        "events": event_data,
+        "user_type": user["type"]
     })
 
 
@@ -122,7 +123,7 @@ def check_venue_exists(venue):
 
 @coordinator_login_required
 def venue_creation(request):
-    return render(request, "pages/coordinator/venuecreation.html")
+    return render(request, "pages/coordinator/venuecreation.html", {"user_type": request.session["user"]["type"]})
 
 @require_http_methods(["POST"])
 @coordinator_login_required
