@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from coreapp.models import user_model
 from coreapp.forms import changeApprovalForm, deregisterForm, changeClubForm
 from django.db import connection
 from coreapp import utils

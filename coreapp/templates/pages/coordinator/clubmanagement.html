@@ -1,0 +1,388 @@
+<!-- myapp/templates/myapp/my_template.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Data</title>
+    <style>
+        /* Additional styles for smaller tables */
+        .table-sm th,
+        .table-sm td {
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.22.2/dist/bootstrap-table.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.2/dist/bootstrap-table.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+</head>
+
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-auto bg-light sticky-top">
+            <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
+                <a href="/" class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip"
+                   data-bs-placement="right" data-bs-original-title="Icon-only">
+                    <i style="font-size: 1.5rem;" class="bi-house fs-1"></i>
+                </a>
+                <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center justify-content-between w-100 px-3 align-items-center">
+                    <li class="nav-item">
+                        <button class="btn py-3 px-2 sectionBtn" data-section="user_modification" title=""
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="right" data-bs-original-title="Home">
+                            <i style="font-size: 1.5rem;" class="bi-person-circle fs-1"></i>
+                        </button>
+                    </li>
+
+                    <li>
+                        <button class="btn py-3 px-2 sectionBtn" data-section="event_modification" title=""
+                                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                            <i style="font-size: 1.5rem;" class="bi-speedometer2 fs-1"></i>
+                        </button>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+        <div class="col-xl p-3 min-vh-100">
+            <div id="user_modification" class="section">
+                <div class=all_users">
+                    <div class="col-lg-10">
+                        <div class="card lg-5">
+                            <div class="card-header">
+                                <h2>All users in club</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="overflow-auto" style="max-height: 400px;">
+                                    <table id="all_users_table" data-toggle="table" data-multiple-select-row="true"
+                                           data-click-to-select="true" data-pagination="true" data-search="true"
+                                           data-buttons="all_users_buttons">
+                                        <thead>
+                                        <tr>
+                                            <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
+                                            <th>Username</th>
+                                            <th>Type</th>
+                                            <th>Email</th>
+                                            <th>Address</th>
+                                            <th>Phone</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for user in all_user_data %}
+                                            <tr data-row-id="{{ user.username }}">
+                                                <td></td> <!-- Add this line -->
+                                                <td>{{ user.username }}</td>
+                                                <td>
+                                                    {% if user.type == 0 %}
+                                                        User
+                                                    {% elif user.type == 1 %}
+                                                        Coordinator
+                                                    {% elif user.type == 2 %}
+                                                        Admin
+                                                    {% else %}
+                                                        Unknown Type
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ user.email }}</td>
+                                                <td>{{ user.address }}</td>
+                                                <td>{{ user.phone }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pending_users">
+                    <div class="col-lg-10">
+                        <div class="card mt-5">
+                            <div class="card-header">
+                                <h2>Pending Approval</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="overflow-auto" style="max-height: 400px;">
+                                    <table id="pending_users_table" data-toggle="table" data-multiple-select-row="true"
+                                           data-click-to-select="true" data-pagination="true" data-search="true"
+                                           data-buttons="pending_users_buttons">
+                                        <thead>
+                                        <tr>
+                                            <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
+                                            <th>Username</th>
+                                            <th>Type</th>
+                                            <th>Email</th>
+                                            <th>Address</th>
+                                            <th>Phone</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for user in pending_user_data %}
+                                            <tr data-row-id="{{ user.username }}">
+                                                <td></td> <!-- Add this line -->
+                                                <td>{{ user.username }}</td>
+                                                <td>
+                                                    {% if user.type == 0 %}
+                                                        User
+                                                    {% elif user.type == 1 %}
+                                                        Coordinator
+                                                    {% elif user.type == 2 %}
+                                                        Admin
+                                                    {% else %}
+                                                        Unknown Type
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ user.email }}</td>
+                                                <td>{{ user.address }}</td>
+                                                <td>{{ user.phone }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="event_modification" class="section">
+                <h4>Approved Users</h4>
+                <table id="approved_event_table" data-toggle="table" data-multiple-select-row="true"
+                       data-click-to-select="true" data-pagination="true" data-search="true">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Event</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for event, users in event_users.items %}
+                        {% for user in users.attending %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ user }}</td>
+                                <td>{{ event }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <h4>Pending Users</h4>
+                <table id="pending_event_table" data-toggle="table" data-multiple-select-row="true"
+                       data-click-to-select="true" data-pagination="true" data-search="true"
+                       data-buttons="pending_event_users_buttons">
+                    <thead>
+                    <tr>
+                        <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
+                        <th scope="col">#</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Event</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for event, users in event_users.items %}
+                        {% for user in users.pending %}
+                            <tr>
+                                <th></th>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ user }}</td>
+                                <td>{{ event }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<form id="approvalForm" action="clubmanagement/changeapproval" method="post">
+    {% csrf_token %}
+    {{ change_approval_form }}
+</form>
+
+<form id="EventapprovalForm" action="clubmanagement/eventchangeapproval" method="post">
+    {% csrf_token %}
+    {{ change_attendance_form  }}
+</form>
+
+<form id="deregisterForm" action="clubmanagement/deregister" method="post">
+    {% csrf_token %}
+    {{ deregister_form }}
+</form>
+
+<script>
+
+{#    change the approval of users in the club#}
+    function deregisterUser(tableID) {
+        let table = $(tableID);
+        // getSelectedRow
+        let x = table.bootstrapTable('getSelections');
+
+        document.getElementById('register_username').value = x[0]['1'];
+        document.getElementById('deregisterForm').submit();
+    }
+
+    function approveUser(tableID) {
+        let table = $(tableID);
+        // getSelectedRow
+        let x = table.bootstrapTable('getSelections');
+        let username = x[0]['1'];
+        let registered = 1;
+
+        document.getElementById('id_username').value = username;
+        document.getElementById('id_registered').value = registered;
+        document.getElementById('approvalForm').submit();
+    }
+
+    function rejectUser(tableID) {
+        let table = $(tableID);
+        // getSelectedRow
+        let x = table.bootstrapTable('getSelections');
+        let username = x[0]['1'];
+        let registered = 0;
+
+        document.getElementById('id_username').value = username;
+        document.getElementById('id_registered').value = registered;
+        document.getElementById('approvalForm').submit();
+    }
+
+    {#change the approval of event attendence#}
+function approveEventUser(tableID) {
+        let table = $(tableID);
+        // getSelectedRow
+        let x = table.bootstrapTable('getSelections');
+        let username = x[0]['2'];
+        let event_id = x[0]['3'];
+        let registered = 1;
+
+
+        document.getElementById('event_attendance_event_id').value = event_id;
+        document.getElementById('event_attendance_username').value = username;
+        document.getElementById('event_attendance_approved').value = registered;
+        document.getElementById('EventapprovalForm').submit();
+    }
+
+function rejectEventUser(tableID) {
+        let table = $(tableID);
+        // getSelectedRow
+        let x = table.bootstrapTable('getSelections');
+        console.log(x)
+        let username = x[0]['2'];
+        let event_id = x[0]['3'];
+        let registered = 0;
+
+        document.getElementById('event_attendance_event_id').value = event_id;
+        document.getElementById('event_attendance_username').value = username;
+        document.getElementById('event_attendance_approved').value = registered;
+        document.getElementById('EventapprovalForm').submit();
+    }
+
+    {# button dec#}
+    function all_users_buttons() {
+        return {
+            btnUsersAdd: {
+                text: 'Deregister User',
+                icon: 'bi bi-dash-circle',
+                event: function () {
+                    deregisterUser("#all_users_table")
+                },
+                attributes: {
+                    title: 'Deregister a user from the system'
+                }
+            }
+        }
+    }
+
+    function pending_users_buttons() {
+        return {
+            btnUsersApprove: {
+                text: 'Approve User',
+                icon: 'bi bi-plus-circle',
+                event: function () {
+                    approveUser("#pending_users_table")
+                },
+                attributes: {
+                    title: 'Approve a user to the system'
+                }
+            },
+            btnUsersReject: {
+                text: 'Reject User',
+                icon: 'bi bi-dash-circle',
+                event: function () {
+                    rejectUser("#pending_users_table")
+                },
+                attributes: {
+                    title: 'Reject a user from the system'
+                }
+            }
+        }
+    }
+
+    function pending_event_users_buttons() {
+        return {
+            btnUsersApprove: {
+                text: 'Approve User',
+                icon: 'bi bi-plus-circle',
+                event: function () {
+                    approveEventUser("#pending_event_table")
+                },
+                attributes: {
+                    title: 'Approve a user to the system'
+                }
+            },
+            btnUsersReject: {
+                text: 'Reject User',
+                icon: 'bi bi-dash-circle',
+                event: function () {
+                    rejectEventUser("#pending_event_table")
+                },
+                attributes: {
+                    title: 'Reject a user from the system'
+                }
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        console.log('ready')
+        // Initially hide all sections
+        $('.section').hide();
+        // Show the first section
+        $('#user_modification').show();
+        // When a button is clicked
+        $('.sectionBtn').click(function () {
+            console.log('clicked')
+            // Hide all sections
+            $('.section').hide();
+            // Show the section associated with the button
+            var sectionToShow = $(this).data('section');
+            $('#' + sectionToShow).show();
+        });
+    });
+
+
+</script>
+
+</body>
+</html>
+

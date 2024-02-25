@@ -6,10 +6,7 @@ from coreapp.views.decorators import coordinator_login_required
 from coreapp import utils
 
 
-@coordinator_login_required
-def home(request):
-    user = request.session["user"]
-
+def get_club(user):
     with connection.cursor() as cursor:
         # What club is this coordinator part of?
         cursor.execute("""
@@ -21,6 +18,14 @@ def home(request):
 
         ret = utils.fetchall_dict(cursor)
         club = ret[0] if len(ret) != 0 else None
+        return club
+
+
+@coordinator_login_required
+def home(request):
+    user = request.session["user"]
+    club = get_club(user)
+    with connection.cursor() as cursor:
 
         if club is None:
             return redirect("/coordinator/clubcreation")
@@ -60,10 +65,11 @@ def create_club(request):
 def club_creation_attempt(request):
     with connection.cursor() as cursor:
         cursor.execute("INSERT INTO clubs(description, coordinator) VALUES (%s, %s)", [
-                       request.POST["club-description"], request.session["user"]["id"]])
+            request.POST["club-description"], request.session["user"]["id"]])
 
         cursor.execute(
-            "INSERT INTO club_names(club_id, name) VALUES ((SELECT id FROM clubs WHERE last_insert_rowid() == clubs.ROWID), %s)", [request.POST["club-name"]])
+            "INSERT INTO club_names(club_id, name) VALUES ((SELECT id FROM clubs WHERE last_insert_rowid() == clubs.ROWID), %s)",
+            [request.POST["club-name"]])
 
         cursor.execute(
             "INSERT INTO club_applications(club_id) VALUES ((SELECT id FROM clubs WHERE last_insert_rowid() == clubs.ROWID))")
@@ -98,16 +104,18 @@ def event_creation_attempt(request):
     # check if venue exists
     if not (venue_id := check_venue_exists(venue)):
         return HttpResponse("Venue doesn't exists")
-    
+
     # inserting into database
     with connection.cursor() as cursor:
         cursor.execute("""
                 INSERT INTO events (club_id, title, description, event_start, event_end, venue_id) 
                 VALUES (%s, %s, %s, %s, %s, %s)""",
-                [club["id"], request.POST["title"], request.POST["description"], request.POST["start-date"], request.POST["end-date"], venue_id])
-    
+                       [club["id"], request.POST["title"], request.POST["description"], request.POST["start-date"],
+                        request.POST["end-date"], venue_id])
+
     # redirecting into home page
     return redirect("/coordinator/home")
+
 
 def check_venue_exists(venue):
     with connection.cursor() as cursor:
@@ -119,6 +127,3 @@ def check_venue_exists(venue):
         result = cursor.fetchone()
         print(result)
         return result[0] if result else False
-
-
-    
