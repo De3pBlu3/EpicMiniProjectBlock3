@@ -117,12 +117,17 @@
                             </div>
                             <div class="card-body">
                                 <div class="overflow-auto" style="max-height: 400px;">
-                                    <table id="pending_users_table" data-toggle="table" data-multiple-select-row="true"
-                                           data-click-to-select="true" data-pagination="true" data-search="true"
+                                    <table id="pending_users_table"
+                                            data-toggle="table"
+                                          data-show-columns="true"
+                                          data-multiple-select-row="true"
+                                          data-click-to-select="true"
+                                          data-pagination="true"
+                                          data-search="true"
                                            data-buttons="pending_users_buttons">
                                         <thead>
                                         <tr>
-                                            <th class="bs-checkbox" data-field="state" data-checkbox="true"></th>
+                                            <th data-field="state" data-checkbox="true"></th>
                                             <th>Username</th>
                                             <th>Type</th>
                                             <th>Email</th>
@@ -161,7 +166,7 @@
             </div>
             <div id="event_modification" class="section">
                 <h4>Approved Users</h4>
-                <table id="approved_event_table" data-toggle="table" data-multiple-select-row="true"
+                <table id="approved_event_table" data-toggle="table" data-multiple-select-row="fa;se"
                        data-click-to-select="true" data-pagination="true" data-search="true">
                     <thead>
                     <tr>
@@ -184,8 +189,13 @@
                 </table>
 
                 <h4>Pending Users</h4>
-                <table id="pending_event_table" data-toggle="table" data-multiple-select-row="true"
-                       data-click-to-select="true" data-pagination="true" data-search="true"
+                <table id="pending_event_table"
+                       data-toggle="table"
+                      data-show-columns="true"
+                      data-multiple-select-row="true"
+                      data-click-to-select="true"
+                      data-pagination="true"
+                      data-search="true"
                        data-buttons="pending_event_users_buttons">
                     <thead>
                     <tr>
