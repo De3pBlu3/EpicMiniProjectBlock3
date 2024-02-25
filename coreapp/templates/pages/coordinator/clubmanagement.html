@@ -1,6 +1,6 @@
 <!-- myapp/templates/myapp/my_template.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,16 +31,24 @@
 
 <body>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-auto bg-light sticky-top">
-            <div class="d-flex flex-sm-column flex-row flex-nowrap bg-light align-items-center sticky-top">
-                <a href="/" class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip"
-                   data-bs-placement="right" data-bs-original-title="Icon-only">
-                    <i style="font-size: 1.5rem;" class="bi-house fs-1"></i>
-                </a>
+    <div class="row vh-100">
+    <div class="col vh-100">
+      <div class="row p-3 vh-100">
+        <div class="col-3 position-fixed vh-100">
+          <div class="row align-items-center vh-100">
+            <div class="col">
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <h1>ClubHub</h1>
+                </li>
+                    <a class="list-group-item" href="/coordinator/home">Upcoming Events</a>
+                    <a class="list-group-item" href="/coordinator/venuecreation">Create a venue </a>
+                    <a class="list-group-item" href="/coordinator/clubmanagement">Manage your club</a>
+                   <div class="col-auto sticky-top list-group-item">
+            <div class="d-flex flex-sm-column flex-row flex-nowrap align-items-center sticky-top">
                 <ul class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto text-center justify-content-between w-100 px-3 align-items-center">
                     <li class="nav-item">
-                        <button class="btn py-3 px-2 sectionBtn" data-section="user_modification" title=""
+                        <button class="btn py-1 px-2 sectionBtn " data-section="user_modification" title=""
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="right" data-bs-original-title="Home">
                             <i style="font-size: 1.5rem;" class="bi-person-circle fs-1"></i>
@@ -48,23 +56,27 @@
                     </li>
 
                     <li>
-                        <button class="btn py-3 px-2 sectionBtn" data-section="event_modification" title=""
+                        <button class="btn py-1 px-2 sectionBtn  px-auto" data-section="event_modification" title=""
                                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
                             <i style="font-size: 1.5rem;" class="bi-speedometer2 fs-1"></i>
                         </button>
                     </li>
-
-
                 </ul>
             </div>
+
+            </div>
+                  <a class="list-group-item" href="/user/updatedetails">My Profile</a>
+              </ul>
+          </div>
         </div>
-        <div class="col-xl p-3 min-vh-100">
+        </div>
+      <div class="col-9 p-3 min-vh-100 offset-md-3">
             <div id="user_modification" class="section">
                 <div class=all_users">
                     <div class="col-lg-10">
                         <div class="card lg-5">
                             <div class="card-header">
-                                <h2>All users in club</h2>
+                                <h3>All users in club</h3>
                             </div>
                             <div class="card-body">
                                 <div class="overflow-auto" style="max-height: 400px;">
@@ -113,7 +125,7 @@
                     <div class="col-lg-10">
                         <div class="card mt-5">
                             <div class="card-header">
-                                <h2>Pending Approval</h2>
+                                <h3>Pending Approval</h3>
                             </div>
                             <div class="card-body">
                                 <div class="overflow-auto" style="max-height: 400px;">
