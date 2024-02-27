@@ -80,7 +80,11 @@ def club_creation_attempt(request):
 
 @coordinator_login_required
 def create_event(request):
-    return render(request, "pages/coordinator/eventcreation.html")
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT id, venue FROM venues WHERE club_id = (SELECT id FROM clubs WHERE coordinator=%s)", [request.session["user"]["id"]]) 
+        venues = utils.fetchall_dict(cursor)
+         
+    return render(request, "pages/coordinator/eventcreation.html", {"venues": venues})
 
 
 @coordinator_login_required
