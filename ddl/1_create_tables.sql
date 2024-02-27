@@ -1,8 +1,8 @@
 CREATE TABLE users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    type INTEGER,
-    password_hash TEXT,
-    address TEXT,
+    type INTEGER NOT NULL,
+    password_hash TEXT NOT NULL,
+    address TEXT NOT NULL,
 
     created DATETIME,
     updated DATETIME
@@ -11,8 +11,8 @@ CREATE TABLE users (
 CREATE TABLE user_applications (
     user_id INTEGER PRIMARY KEY,
     
-    approved BOOL DEFAULT FALSE,
-    pending BOOL DEFAULT TRUE,
+    approved BOOL DEFAULT FALSE NOT NULL,
+    pending BOOL DEFAULT TRUE NOT NULL,
 
     created DATETIME,
     updated DATETIME,
@@ -55,8 +55,8 @@ CREATE TABLE memberships (
     user_id INTEGER,
     club_id INTEGER,
 
-    approved BOOL DEFAULT FALSE,
-    pending BOOL DEFAULT TRUE,
+    approved BOOL DEFAULT FALSE NOT NULL,
+    pending BOOL DEFAULT TRUE NOT NULL,
 
     created DATETIME,
     updated DATETIME,
@@ -67,7 +67,7 @@ CREATE TABLE memberships (
 
 CREATE TABLE clubs (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    description TEXT,
+    description TEXT NOT NULL,
 
     coordinator INTEGER,
     
@@ -90,8 +90,8 @@ CREATE TABLE club_names (
 CREATE TABLE club_applications (
     club_id INTEGER PRIMARY KEY,
 
-    approved BOOL DEFAULT FALSE,
-    pending BOOL DEFAULT TRUE,
+    approved BOOL DEFAULT FALSE NOT NULL,
+    pending BOOL DEFAULT TRUE NOT NULL,
 
     created DATETIME,
     updated DATETIME,
@@ -106,8 +106,8 @@ CREATE TABLE events (
     title TEXT NOT NULL,
     description TEXT NOT NULL,
 
-    event_start DATETIME,
-    event_end DATETIME,
+    event_start DATETIME NOT NULL,
+    event_end DATETIME NOT NULL,
     venue_id INTEGER,
     
     created DATETIME,
@@ -123,8 +123,8 @@ CREATE TABLE event_attendance_applications (
     event_id INTEGER,
     user_id INTEGER,
 
-    approved BOOL DEFAULT FALSE,
-    pending BOOL DEFAULT TRUE,
+    approved BOOL DEFAULT FALSE NOT NULL,
+    pending BOOL DEFAULT TRUE NOT NULL,
 
     created DATETIME,
     updated DATETIME,
@@ -136,7 +136,7 @@ CREATE TABLE event_attendance_applications (
 CREATE TABLE venues (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     club_id INTEGER,
-    venue TEXT,
+    venue TEXT NOT NULL,
 
     created DATETIME,
     updated DATETIME,
