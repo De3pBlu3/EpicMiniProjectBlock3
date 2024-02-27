@@ -62,7 +62,6 @@ def update_user(request):
             WHERE users.id = %s;
         """, [user["id"]])
         user_data = utils.fetchall_dict(cursor)[0]
-    print(user_data)  # delete on finish?
     return render(request, 'pages/user/details.html', {'user_data': user_data,
                                                        "user_type": user["type"]})
 
