@@ -126,7 +126,6 @@ def check_venue_exists(venue):
             WHERE venue = %s
         """, [venue])
         result = cursor.fetchone()
-        print(result)
         return result[0] if result else False
 
 @coordinator_login_required

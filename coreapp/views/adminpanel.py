@@ -8,17 +8,11 @@ from coreapp.views.decorators import admin_login_required
 # will change the approved status of a user, and the pending status, will not delete the user
 @admin_login_required
 def user_deregister(request):
-    print("DEREGISTER")
     if request.method == 'POST':
-        print("POST")
         form = deregisterForm(request.POST)
         if form.is_valid():
-            print("FORM IS VALID")
             username = form.cleaned_data['username']
-
-            print("FORM IS VALID")
-            print(username)
-
+            
             # change registered status
             with connection.cursor() as cursor:
                 cursor.execute(
@@ -26,25 +20,17 @@ def user_deregister(request):
                     [username])
 
             return redirect('/admin')
-        else:
-            print("FORM IS INVALID")
-            print(form.errors.as_data())
     return redirect('/admin')
 
 
 # will change the pending status of a user, and the approved status, this WILL delete the user
 @admin_login_required
 def user_change_approval(request):
-    print("CHANGE APPROVAL")
     if request.method == 'POST':
         form = changeApprovalForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             registered_value = form.cleaned_data['registered']
-
-            print("FORM IS VALID")
-            print(username)
-            print(registered_value)
 
             # change registered status
             with connection.cursor() as cursor:
@@ -63,16 +49,11 @@ def user_change_approval(request):
 
 @admin_login_required
 def club_change_approval(request):
-    print("CHANGE APPROVAL")
     if request.method == 'POST':
         form = changeClubForm(request.POST)
         if form.is_valid():
             club_id = form.cleaned_data['club_id']
             registered_value = form.cleaned_data['approved']
-
-            print("FORM IS VALID")
-            print(club_id)
-            print(registered_value)
 
             # change registered status
             with connection.cursor() as cursor:

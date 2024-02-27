@@ -58,7 +58,6 @@ def check_credentials(username, password):
         stored = cursor.fetchone()
 
         if stored:
-            print (stored)
             id, hash, approved, type = stored
             if bcrypt.checkpw(password.encode('utf-8'), hash.encode("utf-8")):
                 if approved:

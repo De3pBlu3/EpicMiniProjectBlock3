@@ -9,20 +9,14 @@ from coreapp.views.coordinator import get_club
 # will change the approved status of a user, and the pending status, will not delete the user
 @coordinator_login_required
 def user_deregister(request):
-    print("DEREGISTER")
     # get club
     user = request.session["user"]
     club = get_club(user)
 
     if request.method == 'POST':
-        print("POST")
         form = deregisterForm(request.POST)
         if form.is_valid():
-            print("FORM IS VALID")
             username = form.cleaned_data['username']
-
-            print("FORM IS VALID")
-            print(username)
 
             # change registered status
             with connection.cursor() as cursor:
@@ -31,15 +25,11 @@ def user_deregister(request):
                     [username, club["id"]])
 
             return redirect('/coordinator/clubmanagement')
-        else:
-            print("FORM IS INVALID")
-            print(form.errors.as_data())
     return redirect('/coordinator/clubmanagement')
 
 
 @coordinator_login_required
 def user_change_approval(request):
-    print("CHANGE APPROVAL")
     # get club
     user = request.session["user"]
     club = get_club(user)
@@ -48,10 +38,6 @@ def user_change_approval(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             registered_value = form.cleaned_data['registered']
-
-            print("FORM IS VALID")
-            print(username)
-            print(registered_value)
 
             # change registered status
             with connection.cursor() as cursor:
@@ -70,7 +56,6 @@ def user_change_approval(request):
 
 
 def event_attendance_change_approval(request):
-    print("CHANGE EVENT APPROVAL")
     # get club
     user = request.session["user"]
     club = get_club(user)
@@ -79,10 +64,6 @@ def event_attendance_change_approval(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             registered_value = form.cleaned_data['registered']
-
-            print("FORM IS VALID")
-            print(username)
-            print(registered_value)
 
             # change registered status
             with connection.cursor() as cursor:
@@ -101,7 +82,6 @@ def event_attendance_change_approval(request):
 
 
 def event_change_approval(request):
-    print("CHANGE EVENT APPROVAL")
     # get club
     user = request.session["user"]
     club = get_club(user)
@@ -110,10 +90,6 @@ def event_change_approval(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             registered_value = form.cleaned_data['registered']
-
-            print("FORM IS VALID")
-            print(username)
-            print(registered_value)
 
             # change registered status
             with connection.cursor() as cursor:
@@ -214,7 +190,6 @@ def coordinator_club_mgnt(request):
             "pending": pending_attending_dict.get(event_title, [])
         }
 
-    print(combined_dict)
     # todo might be cool to change pending/attending users into one single dict, means for loop and be written easier
     return render(request, 'pages/coordinator/clubmanagement.html', {'all_user_data': all_users,
                                                                      "pending_user_data": pending_users,
