@@ -118,7 +118,9 @@ CREATE TABLE events (
 );
 
 CREATE TABLE event_attendance_applications (
-    event_id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    
+    event_id INTEGER,
     user_id INTEGER,
 
     approved BOOL DEFAULT FALSE,
