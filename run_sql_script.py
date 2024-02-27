@@ -38,7 +38,8 @@ if __name__ == "__main__":
         error_print(f"Error: path '{path}' does not exist!")
         
     if os.path.isdir(path):
-        for sql_file in glob.glob(f"{path}/*.sql"):
+        for sql_file in sorted(glob.glob(f"{path}/*.sql")):
+            print (sql_file)
             run_sql_script(sql_file)
     else:
         run_sql_script(path)
