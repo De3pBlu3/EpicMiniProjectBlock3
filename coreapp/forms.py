@@ -25,3 +25,12 @@ class changeClubForm(forms.Form):
     class Meta:
         model = user_model
         fields = ['club_id', 'approved']
+
+class changeEventAttendanceForm(forms.Form):
+    event_id = forms.IntegerField(label='Event ID', widget=forms.HiddenInput())
+    username = forms.CharField(label='Username', max_length=255, widget=forms.HiddenInput())
+    approved = forms.BooleanField(label='Change Approved Status', required=False, widget=forms.HiddenInput())
+
+    class Meta:
+        model = user_model
+        fields = ['event_id', 'user_id', 'approved']
