@@ -12,11 +12,13 @@ def run_sql_script(path):
         raw_contents = f.read()
 
     with connection.cursor() as cursor:
+        print(f"connection established for {path}")
         for command in sqlparse.split(raw_contents):
             try:
                 cursor.execute(command)
+                print(f"Executed: {command}")
             except DatabaseError as e:
-                print (f'Error running command: "{command}": {e}')
+                print (f'Error running ommand: "{command}": {e}')
                 sys.exit(1)
 
 def error_print(msg):
@@ -38,7 +40,9 @@ if __name__ == "__main__":
         error_print(f"Error: path '{path}' does not exist!")
         
     if os.path.isdir(path):
-        for sql_file in glob.glob(f"{path}/*.sql"):
+        for sql_file in sorted(glob.glob(f"{path}/*.sql")):
+            print(f"Running {sql_file}")
+            print(glob.glob(f"{path}/*.sql"))
             run_sql_script(sql_file)
     else:
         run_sql_script(path)
