@@ -10,8 +10,7 @@ Group 7:
 ## Project Setup 
 Using docker:
 ```
-docker build -t miniproject .
-docker run -dp 8000:8000 miniproject
+docker-compose up --build
 ```
 
 Manually:
