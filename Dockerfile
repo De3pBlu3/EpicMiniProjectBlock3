@@ -15,9 +15,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project
 COPY . $SRCDIR
 
-# Run migrations and other setup commands
-RUN python manage.py collectstatic --noinput
-
 # Create the directory for the SQLite database, set the correct permissions, and run the script
 RUN mkdir -p /var/lib/sqlite && \
     chown -R www-data:www-data /var/lib/sqlite && \
