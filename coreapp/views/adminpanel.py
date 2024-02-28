@@ -32,6 +32,9 @@ def user_change_approval(request):
             username = form.cleaned_data['username']
             registered_value = form.cleaned_data['registered']
 
+            with connection.cursor() as cursor:
+                cursor.execute("select user_id from user_usernames where username = %s", [username])
+
             # change registered status
             with connection.cursor() as cursor:
                 if registered_value:

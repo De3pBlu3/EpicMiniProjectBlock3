@@ -95,21 +95,26 @@ def is_valid_password(password):
     pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$'
     return re.match(pattern, password) is not None
 
-def validate_details(dict):
+def validate_details(dict, update=True):
     username = dict.get("username")
     password = dict.get("password")
 
     if not is_valid_username(username):
         return "Username is invalid", None
     
-    if not is_valid_password(password):
-        return "Password is invalid", None
+    
+    if password is None:
+        if not update:
+            return "Password is invalid", None
+    else:        
+        if is_valid_password(password):
+            return "Password is invalid", None
 
     # added code to check if the username already exists
     with connection.cursor() as cursor:
         cursor.execute("SELECT EXISTS(SELECT 1 FROM user_usernames WHERE username=%s)", [username])
         exists = cursor.fetchone()[0]
-        if exists:
+        if exists and not update:
             return "Username already exists", None
             
     hashed_password = bcrypt.hashpw(dict.get("password").encode('utf-8'), bcrypt.gensalt(rounds=12)).decode("utf-8")
@@ -119,7 +124,8 @@ def validate_details(dict):
     elif dict.get("user_type") == "coordinator":
         type = 1
     else:
-        return "Invalid user type", None
+        type = 0
+        
     email = dict.get("email")
     phonenumber = dict.get("phonenumber")
     address = dict.get("address")

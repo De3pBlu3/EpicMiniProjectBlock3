@@ -15,9 +15,11 @@ CREATE TABLE user_applications (
     pending BOOL DEFAULT TRUE NOT NULL,
 
     created DATETIME,
-    updated DATETIME,
+    updated DATETIME
     
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    -- user_id is deliberately NOT a foreign key here, due to requirements
+    -- around maintaining a user_applications record, even if the user is deleted.
+    -- As such, user_id may not reference a user that exists, and so may not be a foreign key.
 );
 
 CREATE TABLE user_usernames (

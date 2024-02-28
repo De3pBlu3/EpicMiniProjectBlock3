@@ -63,25 +63,22 @@ def update_user(request):
         """, [user["id"]])
         user_data = utils.fetchall_dict(cursor)[0]
     return render(request, 'pages/user/details.html', {'user_data': user_data,
-                                                       "user_type": user["type"]})
+                                                       "user_type": "user" if user["type"] == 1 else "coordinator"})
 
 
 @user_login_required
 @require_http_methods(["POST"])
 def update_attempt(request):
-    error, details = validate_details(request.POST)
-    if error is not None:
-        return render(request, "pages/user/details.html", {
-            "toast": {
-                "text": error,
-                "type": "danger"
-            }
-
-        })
-
-    else:
+    error, details = validate_details(request.POST, update=True)
+     
+    print (request.POST)
+    print (error)
+     
+    if error is None:
         user_id = request.session["user"]["id"]
         insert_updated_user(user_id, details)
+
+    return redirect("/user/updatedetails")
 
 
 def insert_updated_user(user_id, info):

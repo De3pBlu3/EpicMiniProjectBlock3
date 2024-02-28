@@ -29,6 +29,8 @@
                 <input type="text" class="form-control" name="address" id="update_address" value="{{ user_data.address }}">
             </div>
             
+            <input type="hidden" name="type" value="{{ user_type }}" />
+
             <button type="submit" class="btn mt-2 btn-primary">Update Details</button>
         </form>
     {% else %}
