@@ -71,9 +71,6 @@ def update_user(request):
 def update_attempt(request):
     error, details = validate_details(request.POST, update=True)
      
-    print (request.POST)
-    print (error)
-     
     if error is None:
         user_id = request.session["user"]["id"]
         insert_updated_user(user_id, details)
