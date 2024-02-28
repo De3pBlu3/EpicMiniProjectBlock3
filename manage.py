@@ -15,10 +15,6 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    # if runserver is command line argument:
-    # if 'runserver' in sys.argv:
-    #     # run the sql script
-    #     os.system('python run_sql_script.py ddl')
     execute_from_command_line(sys.argv)
 
 
