@@ -39,8 +39,6 @@ if __name__ == "__main__":
         
     if os.path.isdir(path):
         for sql_file in sorted(glob.glob(f"{path}/*.sql")):
-            print(f"Running {sql_file}")
-            print(glob.glob(f"{path}/*.sql"))
             run_sql_script(sql_file)
     else:
         run_sql_script(path)
