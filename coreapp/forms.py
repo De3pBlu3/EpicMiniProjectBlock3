@@ -1,6 +1,4 @@
-# myapp/forms.py
 from django import forms
-from .models import user_model
 
 class changeApprovalForm(forms.Form):
     username = forms.CharField(label='Username', max_length=255, widget=forms.HiddenInput())
@@ -8,14 +6,12 @@ class changeApprovalForm(forms.Form):
 
 
     class Meta:
-        model = user_model
         fields = ['username', 'registered']
 
 class deregisterForm(forms.Form):
     username = forms.CharField(label='Username', max_length=255, widget=forms.HiddenInput())
 
     class Meta:
-        model = user_model
         fields = ['username']
 
 class changeClubForm(forms.Form):
@@ -23,7 +19,6 @@ class changeClubForm(forms.Form):
     approved = forms.BooleanField(label='Change Approved Status', required=False, widget=forms.HiddenInput())
 
     class Meta:
-        model = user_model
         fields = ['club_id', 'approved']
 
 class changeEventAttendanceForm(forms.Form):
@@ -32,5 +27,4 @@ class changeEventAttendanceForm(forms.Form):
     approved = forms.BooleanField(label='Change Approved Status', required=False, widget=forms.HiddenInput())
 
     class Meta:
-        model = user_model
         fields = ['event_id', 'user_id', 'approved']
